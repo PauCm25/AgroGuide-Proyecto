@@ -1,5 +1,6 @@
 package com.agroguide.guia.infraestructure.driver_adapter.jpa_repository.favoritos;
 
+import com.agroguide.guia.domain.model.Guia;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,9 +18,11 @@ public class FavoritosData {
     private Long idFav;
 
     private Long idUsuario;
-    private Long idGuia;
     private String tituloGuia;
     private String autorGuia;
 
+    @ManyToOne
+    @JoinColumn(name ="id_guia")
+    private Guia guia;
 
 }
