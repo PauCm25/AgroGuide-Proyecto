@@ -41,19 +41,20 @@ public class UsuarioController {
         try {
             Usuario usuario = mapperUsuario.toUsuario(usuarioData);
             Usuario usuarioValidadoLogin = usuarioUseCase.loginUsuario(usuario.getEmail(), usuario.getPassword());
-            if (usuarioValidadoLogin!=null && usuarioValidadoLogin.getId()!=null) {
-                LoginResponse respuesta = new LoginResponse("Bienvenido",
-                        //SON LAS VARIABLES QUE RETORNA EN EL USUARIO
-                        usuarioValidadoLogin.getId(),
-                        usuarioValidadoLogin.getNombre(),
-                        usuarioValidadoLogin.getTipoUsuario());
-                return ResponseEntity.ok(respuesta);
-            }else {
-                LoginResponse respuesta = new LoginResponse
-                    ( "Credenciales invalidas",
-                            null, null, null);
-                return ResponseEntity.ok((respuesta)); }
-        } catch (IllegalArgumentException e) {
+            LoginResponse respuesta = new LoginResponse("Bienvenido",
+                    //SON LAS VARIABLES QUE RETORNA EN EL USUARIO
+                    usuarioValidadoLogin.getId(),
+                    usuarioValidadoLogin.getNombre(),
+                    usuarioValidadoLogin.getTipoUsuario()
+            );
+            return ResponseEntity.ok(respuesta);
+        }catch (IllegalArgumentException e) {
+            LoginResponse respuesta = new LoginResponse
+                    ( e.getMessage(),
+                            null, null, null
+                    );
+            return ResponseEntity.ok((respuesta));
+        }catch (Exception e) {
             LoginResponse error = new LoginResponse
                     ( "Error en el login: " + e.getMessage(),
                             null, null, null);
@@ -62,13 +63,36 @@ public class UsuarioController {
     }
     //Buscar
     @GetMapping("/{id}")
-    public ResponseEntity<Usuario> findByIdUsuario(@PathVariable Long id){
+    public ResponseEntity<LoginResponse> findByIdUsuario(@PathVariable Long id){
 
-        Usuario usuarioValidadoEncontrado = usuarioUseCase.buscarPorId(id);
-        if (usuarioValidadoEncontrado.getId() != null){
-            return new ResponseEntity<>(usuarioValidadoEncontrado, HttpStatus.OK);
+        try {
+            Usuario usuarioValidadoEncontrado = usuarioUseCase.buscarPorId(id);
+            LoginResponse resuesta = new LoginResponse(
+                    "Usuario encontrado",
+                    usuarioValidadoEncontrado.getId(),
+                    usuarioValidadoEncontrado.getNombre(),
+                    usuarioValidadoEncontrado.getTipoUsuario()
+            );
+            return ResponseEntity.ok(resuesta);
+        }catch (IllegalArgumentException e){
+            LoginResponse respuesta = new LoginResponse(
+                    e.getMessage(), null, null, null
+            );
+            return ResponseEntity.ok(respuesta);
+        }catch(RuntimeException e) {
+            LoginResponse error = new LoginResponse(
+                    e.getMessage(), null, null, null
+            );
+            return ResponseEntity.ok(error);
+
+        } catch (Exception e) {
+            // Fallback
+            LoginResponse error = new LoginResponse(
+                    "Error interno",
+                    null, null, null
+            );
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
         }
-        return new ResponseEntity<>(usuarioValidadoEncontrado, HttpStatus.CONFLICT);
     }
     @PutMapping("/update")
     public ResponseEntity<LoginResponse> updateUsuario(@RequestBody UsuarioData usuarioData) {
@@ -84,9 +108,9 @@ public class UsuarioController {
             return ResponseEntity.ok(respuesta);
 
         } catch (IllegalArgumentException e) {
-            LoginResponse error = new LoginResponse(e.getMessage(),
+            LoginResponse respuesta = new LoginResponse(e.getMessage(),
                     null, null, null);
-            return ResponseEntity.status(HttpStatus.OK).body(error);
+            return ResponseEntity.ok(respuesta);
         } catch (Exception e) {
             LoginResponse error = new LoginResponse
                     ("Error al actualizar el usuario: ",
