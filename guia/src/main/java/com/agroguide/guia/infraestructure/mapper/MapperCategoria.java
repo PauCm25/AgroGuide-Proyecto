@@ -2,7 +2,9 @@ package com.agroguide.guia.infraestructure.mapper;
 
 import com.agroguide.guia.domain.model.Categoria;
 import com.agroguide.guia.infraestructure.driver_adapter.jpa_repository.categoria.CategoriaData;
+import org.springframework.stereotype.Component;
 
+@Component
 public class MapperCategoria {
     public Categoria toDomain(CategoriaData  categoriaData){
         return new Categoria(
