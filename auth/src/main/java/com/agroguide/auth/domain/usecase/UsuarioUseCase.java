@@ -23,7 +23,7 @@ public class UsuarioUseCase {
 
         } catch (IllegalArgumentException e) {
             //CORREGIR ESTO DEBE MANDAR UN MENSAJE O ALGO
-            throw e;
+            throw new IllegalArgumentException("Error validación al guardar usuario: "+e.getMessage());
         }catch (Exception e){
             throw new RuntimeException("Error al guardar el usuario"+e.getMessage());
         }
@@ -78,18 +78,15 @@ public class UsuarioUseCase {
                 password.matches(".*[!@#$%^&*()_+=<>?/{},\\[\\]\\-].*");  // al menos un símbolo
     }
     public Usuario loginUsuario (String email, String password) {
-        try {
-            Usuario usuario = buscarPorEmail(email);
-            if (usuario == null || usuario.getEmail() == null) {
-                throw new IllegalArgumentException("Usuario no encontrado");
-            }
-            if (!encrypterGateway.checkPass(password, usuario.getPassword())) {
-                throw new IllegalArgumentException("Contraseña incorrecta");
-            }
-            return usuario;
-        }catch (Exception e){
+        Usuario usuario = buscarPorEmail(email);
+        if (usuario == null || usuario.getEmail() == null||usuario.getPassword()==null) {
             throw new IllegalArgumentException("Usuario no encontrado");
         }
+        boolean passOk=encrypterGateway.checkPass(password, usuario.getPassword());
+        if (!passOk){
+            throw new IllegalArgumentException("Contraseña incorrecta");
+        }
+        return usuario;
     }
 
     public Usuario actualizarUsuario (Usuario usuario) {
@@ -98,16 +95,20 @@ public class UsuarioUseCase {
         if (usuario.getId()==null){
             throw new IllegalArgumentException("Es necesario el ID para actualizar");
         }
-
-        Usuario usuarioExiste= buscarPorId(usuario.getId());
-        if(usuarioExiste == null){
-            throw new IllegalArgumentException("Usuario con ID"+usuario.getId()+"no encontrado");
+        Usuario usuarioExiste;
+        try {
+            usuarioExiste= buscarPorId(usuario.getId());
+            if(usuarioExiste==null||usuarioExiste.getId()==null){
+                throw new IllegalArgumentException("Usuario con ID"+usuario.getId()+"no encontrado");
+            }
+        }catch (Exception e){
+            throw new IllegalArgumentException("Usuario con ID "+usuario.getId()+" no encontrado");
         }
         if (usuario.getPassword()==null||usuario.getPassword().isEmpty()){
             throw new IllegalArgumentException("La contraseña es requerida");
         }
         usuario.setPassword(encrypterGateway.encrypt(usuario.getPassword()));
-        return usuarioGateway.guardar(usuario);
+        return usuarioGateway.actualizarUsuario(usuario);
     }
     public void eliminarPorIdUsuario(Long id) {
         try {
@@ -117,13 +118,13 @@ public class UsuarioUseCase {
         }
     }
     public Usuario buscarPorId(Long id) {
+        if (id == null || id <= 0) {
+            throw new IllegalArgumentException("El id es invalido");
+        }
         try {
             return usuarioGateway.buscarPorID(id);
         }catch (Exception e) {
-            System.out.println(e.getMessage());
-
-            Usuario usuarioVacio = new Usuario();
-            return usuarioVacio;
+            throw new RuntimeException("Error al consultar usuario por ID "+ e.getMessage());
         }
     }
     public Usuario buscarPorEmail(String email) {
