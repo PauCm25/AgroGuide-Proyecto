@@ -12,7 +12,7 @@ public class MapperGuia {
     private final MapperRegion mapperRegion;
     private final MapperCategoria mapperCategoria;
 
-    public Guia toDomain(GuiaData guiaData) {
+    public Guia toGuia(GuiaData guiaData) {
         Guia guia = new Guia();
         guia.setIdGuia(guiaData.getIdGuia());
         guia.setIdTecnico(guiaData.getIdTecnico());
@@ -23,9 +23,9 @@ public class MapperGuia {
         guia.setEtiquetas(guiaData.getEtiquetas());
         guia.setEstadoGuia(guiaData.getEstadoGuia());
 
-        guia.setCultivo(mapperCultivo.toDomain(guiaData.getCultivos()));
-        guia.setRegion(mapperRegion.toDomain(guiaData.getRegiones()));
-        guia.setCategoria(mapperCategoria.toDomain(guiaData.getCategorias()));
+        guia.setCultivo(mapperCultivo.toGuia(guiaData.getCultivos()));
+        guia.setRegion(mapperRegion.toGuia(guiaData.getRegiones()));
+        guia.setCategoria(mapperCategoria.toGuia(guiaData.getCategorias()));
         return guia;
     }
     public GuiaData toGuiaData(Guia guia) {

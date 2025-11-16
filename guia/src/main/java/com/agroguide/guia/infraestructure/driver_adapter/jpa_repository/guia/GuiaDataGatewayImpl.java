@@ -21,7 +21,7 @@ public class GuiaDataGatewayImpl implements GuiaGateway {
     @Override
     public Guia crear(Guia guia){
         GuiaData guiaData = mapper.toGuiaData(guia);
-        return mapper.toDomain(repository.save(guiaData));
+        return mapper.toGuia(repository.save(guiaData));
     }
 
     @Override
@@ -38,7 +38,7 @@ public class GuiaDataGatewayImpl implements GuiaGateway {
     @Override
     public Guia actualizarPorId(Guia guia) {
         GuiaData guiaData = mapper.toGuiaData(guia);
-        return mapper.toDomain(repository.save(guiaData));
+        return mapper.toGuia(repository.save(guiaData));
     }
 //PENDIENTE
     @Override
@@ -47,7 +47,7 @@ public class GuiaDataGatewayImpl implements GuiaGateway {
         Pageable pageable = PageRequest.of(pagina, tamaño);
         //trae solo los registro de esa pagina
         return repository.findAll(pageable).stream()
-                .map(mapper::toDomain)
+                .map(mapper::toGuia)
                 //lo convierte en una lista
                 .collect(Collectors.toList());
     }
@@ -55,6 +55,6 @@ public class GuiaDataGatewayImpl implements GuiaGateway {
     @Override
     public Guia actualizarEstadoGuia(Guia guia) {
         GuiaData guiaData = mapper.toGuiaData(guia);
-        return mapper.toDomain(repository.save(guiaData));
+        return mapper.toGuia(repository.save(guiaData));
     }
 }
