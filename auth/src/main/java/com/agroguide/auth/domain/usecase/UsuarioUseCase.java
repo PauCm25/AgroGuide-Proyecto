@@ -17,6 +17,10 @@ public class UsuarioUseCase {
         try{
             validacionCamposUsuario(usuario);
             listaErrores(usuario);
+            Usuario usarioExistente=usuarioGateway.buscarPorEmail(usuario.getEmail());
+            if(usarioExistente!=null && usarioExistente.getId()!=usuario.getId()){
+                throw new IllegalArgumentException("El usuario existe en el sistema");
+            }
             String passwordEncriptado= encrypterGateway.encrypt(usuario.getPassword());
             usuario.setPassword(passwordEncriptado);
             return usuarioGateway.guardar(usuario);
