@@ -1,6 +1,9 @@
 package com.agroguide.guia.infraestructure.driver_adapter.jpa_repository.guia;
 
 import com.agroguide.guia.domain.model.Favoritos;
+import com.agroguide.guia.infraestructure.driver_adapter.jpa_repository.categoria.CategoriaData;
+import com.agroguide.guia.infraestructure.driver_adapter.jpa_repository.cultivo.CultivoData;
+import com.agroguide.guia.infraestructure.driver_adapter.jpa_repository.region.RegionData;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,14 +26,24 @@ public class GuiaData {
     private Long idTecnico;
     private String titulo;
     private String descripcion;
+
     private String fechaPublicacion;
     private Long nombreAutor;
     private String etiquetas;
-    private String tipoCultivo;
-    private String region;
+
     private List<Favoritos> favs;
 
-
-
     private String estadoGuia;
+
+    @ManyToOne
+    @JoinColumn(name = "id_cultivo")
+    private CultivoData cultivos;
+
+    @ManyToOne
+    @JoinColumn(name = "id_region")
+    private RegionData regiones;
+
+    @ManyToOne
+    @JoinColumn(name = "id_categoria")
+    private CategoriaData categorias;
 }
