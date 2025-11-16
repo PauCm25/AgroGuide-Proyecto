@@ -14,7 +14,7 @@ public class GuiaUseCase {
     public Guia crearGuia(Guia guia){
         //Condicional para hacer que el nombre y el precio sean obligatorios en el producto
         //si ambos son nulos, no se guarda el producto
-        if(guia.getTitulo() == null && guia.getTipoCultivo() == null
+        if(guia.getTitulo() == null && guia.getCultivo() == null
                 && guia.getDescripcion() == null
                 && guia.getRegion() == null && guia.getEtiquetas() == null){
             throw new NullPointerException("Ingrese atributos correctamente - crearGuia");

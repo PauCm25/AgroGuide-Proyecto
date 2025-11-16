@@ -28,7 +28,7 @@ public class GuiaData {
     private String descripcion;
 
     private String fechaPublicacion;
-    private Long nombreAutor;
+    private String nombreAutor;
     private String etiquetas;
 
     private List<Favoritos> favs;
