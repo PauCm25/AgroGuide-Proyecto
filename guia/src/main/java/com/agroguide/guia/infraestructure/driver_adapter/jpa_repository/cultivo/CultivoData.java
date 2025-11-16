@@ -1,7 +1,6 @@
 package com.agroguide.guia.infraestructure.driver_adapter.jpa_repository.cultivo;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,4 +11,12 @@ import lombok.NoArgsConstructor;
 @Table(name = "cultivos") //Crear otra tabla en la BD llamada "cultivos"
 @Data //Con Data se obtienen getters, setters, y se utiliza en entidades JPA
 public class CultivoData {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long idCultivo;
+
+    private String nombreCultivo;
+    private String tipoSuelo;
+    private String climaRecomendado;
 }

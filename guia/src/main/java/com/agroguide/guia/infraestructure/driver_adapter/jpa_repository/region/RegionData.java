@@ -1,7 +1,6 @@
 package com.agroguide.guia.infraestructure.driver_adapter.jpa_repository.region;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,4 +11,11 @@ import lombok.NoArgsConstructor;
 @Table(name = "regiones") //Crear otra tabla en la BD llamada "regiones"
 @Data //Con Data se obtienen getters, setters, y se utiliza en entidades JPA
 public class RegionData {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long idRegion;
+
+    private String nombreRegion;
+    private String departamento;
 }

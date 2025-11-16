@@ -1,8 +1,7 @@
 package com.agroguide.guia.infraestructure.driver_adapter.jpa_repository.categoria;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,4 +12,11 @@ import lombok.NoArgsConstructor;
 @Table(name = "categorias") //Crear otra tabla en la BD llamada "categorias"
 @Data //Con Data se obtienen getters, setters, y se utiliza en entidades JPA
 public class CategoriaData {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long idCategoria;
+
+    private String nombreCategoria;
+    private String descripcionCategoria;
 }
