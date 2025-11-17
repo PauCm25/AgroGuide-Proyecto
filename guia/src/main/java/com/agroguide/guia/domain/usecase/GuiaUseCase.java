@@ -18,7 +18,7 @@ public class GuiaUseCase {
         //si ambos son nulos, no se guarda el producto
         if(guia.getTitulo() == null && guia.getCultivo() == null
                 && guia.getDescripcion() == null
-                && guia.getRegion() == null && guia.getEtiquetas() == null){
+                && guia.getRegion() == null){
             throw new NullPointerException("Ingrese atributos correctamente - crearGuia");
         }
 
