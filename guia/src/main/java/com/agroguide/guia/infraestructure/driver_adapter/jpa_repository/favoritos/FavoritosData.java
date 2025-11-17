@@ -24,7 +24,6 @@ public class FavoritosData {
 
     @ManyToOne
     @JoinColumn(name ="id_guia")
-    //ESTO SE CAMBIO de Guia a GuiaData
     private GuiaData guia;
 
 }
