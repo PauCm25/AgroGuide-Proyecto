@@ -30,11 +30,13 @@ public class GuiaData {
     private String fechaPublicacion;
     private String nombreAutor;
     private String etiquetas;
-//SE CAMBIO DE private List<Favoritos> favs; A->
-    @OneToMany(mappedBy = "guia", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<FavoritosData> favs;
 
     private String estadoGuia;
+
+    //Relación 1:M de la tabla guias con la tabla favoritos
+    @OneToMany(mappedBy = "guias", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<FavoritosData> favs;
+
 
     @ManyToOne
     @JoinColumn(name = "id_cultivo")
