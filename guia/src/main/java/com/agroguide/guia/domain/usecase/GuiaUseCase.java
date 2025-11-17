@@ -33,7 +33,7 @@ public class GuiaUseCase {
         try {
             guiaGateway.eliminarPorId(id);
         } catch (Exception e) {
-            throw new IllegalArgumentException("Error al eliminar la guía. No existe");
+            throw new GuiaNoExisteException("Error al eliminar la guía. No existe");
         }
     }
 
