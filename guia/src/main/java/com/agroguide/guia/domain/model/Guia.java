@@ -23,7 +23,6 @@ public class Guia {
     private String descripcion;
     private String fechaPublicacion;
     private String nombreAutor; // Esto se debe tomar automaticamente del usuario técnico que lo esté creando
-    private String etiquetas;
 
     private Cultivo cultivo;
     private Region region;
