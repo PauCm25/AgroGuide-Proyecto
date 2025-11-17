@@ -1,7 +1,7 @@
 package com.agroguide.guia.domain.exception;
 
-public class EstadoNoEstablecido extends RuntimeException {
-    public EstadoNoEstablecido(String message) {
+public class EstadoNoEstablecidoException extends RuntimeException {
+    public EstadoNoEstablecidoException(String message) {
         super(message);
     }
 }
