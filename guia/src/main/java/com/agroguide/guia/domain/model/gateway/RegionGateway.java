@@ -12,5 +12,5 @@ public interface RegionGateway {
     void eliminarPorId(Long idRegion);
     Region consultarPorId(Long idRegion);
     Region actualizarPorId(Region region);
-    List<Region> ListarCultivos(int page, int size);
+    List<Region> ListarRegiones(int page, int size);
 }
