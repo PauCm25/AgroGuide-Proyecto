@@ -1,8 +1,8 @@
 package com.agroguide.guia.infraestructure.driver_adapter.jpa_repository.guia;
 
-import com.agroguide.guia.domain.model.Favoritos;
 import com.agroguide.guia.infraestructure.driver_adapter.jpa_repository.categoria.CategoriaData;
 import com.agroguide.guia.infraestructure.driver_adapter.jpa_repository.cultivo.CultivoData;
+import com.agroguide.guia.infraestructure.driver_adapter.jpa_repository.favoritos.FavoritosData;
 import com.agroguide.guia.infraestructure.driver_adapter.jpa_repository.region.RegionData;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -30,8 +30,9 @@ public class GuiaData {
     private String fechaPublicacion;
     private String nombreAutor;
     private String etiquetas;
-
-    private List<Favoritos> favs;
+//SE CAMBIO DE private List<Favoritos> favs; A->
+    @OneToMany(mappedBy = "guia", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<FavoritosData> favs;
 
     private String estadoGuia;
 

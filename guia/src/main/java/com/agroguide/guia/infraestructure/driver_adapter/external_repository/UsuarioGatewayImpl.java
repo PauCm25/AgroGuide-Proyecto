@@ -1,6 +1,7 @@
 package com.agroguide.guia.infraestructure.driver_adapter.external_repository;
 
 
+import com.agroguide.guia.domain.model.gateway.UsuarioGateway;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
@@ -8,7 +9,7 @@ import org.springframework.web.client.RestTemplate;
 
 @RequiredArgsConstructor
 @Component
-public class UsuarioGatewayImpl {
+public class UsuarioGatewayImpl implements UsuarioGateway {
 
     private final RestTemplate restTemplate;
 
