@@ -1,5 +1,7 @@
 package com.agroguide.guia.domain.usecase;
 
+import com.agroguide.guia.domain.exception.EstadoNoEstablecido;
+import com.agroguide.guia.domain.exception.GuiaNoExisteException;
 import com.agroguide.guia.domain.model.Guia;
 import com.agroguide.guia.domain.model.gateway.GuiaGateway;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,7 @@ public class GuiaUseCase {
             throw new NullPointerException("Ingrese atributos correctamente - crearGuia");
         }
 
+        guia.setEstadoGuia("PENDIENTE");
         return guiaGateway.crear(guia); //Si esta bien, guarda el producto
     }
 
@@ -73,7 +76,10 @@ public class GuiaUseCase {
 
     public Guia actualizarEstGuia (Guia guia){
         if (guia.getIdGuia() == null){
-            throw new NullPointerException("No existe la guía");
+            throw new GuiaNoExisteException("No existe la guía");
+        }
+        if (guia.getEstadoGuia() == null){
+            throw new EstadoNoEstablecido("La guía no tiene estado");
         }
         return guiaGateway.actualizarEstadoGuia(guia);
     }
