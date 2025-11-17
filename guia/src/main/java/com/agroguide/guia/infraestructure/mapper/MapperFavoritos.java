@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class MapperFavoritos {
-    public Favoritos toDomain(FavoritosData favoritosData) {
+    public Favoritos toFavs(FavoritosData favoritosData) {
         Favoritos fav = new Favoritos();
         fav.setIdFav(favoritosData.getIdFav());
         fav.setIdUsuario(favoritosData.getIdUsuario());

@@ -6,14 +6,14 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class MapperRegion {
-    public Region toDomain(RegionData regionData){
+    public Region toRegion(RegionData regionData){
         return new Region(
                 regionData.getIdRegion(),
                 regionData.getNombreRegion(),
                 regionData.getDepartamento()
         );
     }
-    public RegionData toData(Region region){
+    public RegionData toRegData(Region region){
         return new RegionData(
                 region.getIdRegion(),
                 region.getNombreRegion(),

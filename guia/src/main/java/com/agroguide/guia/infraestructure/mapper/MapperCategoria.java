@@ -6,14 +6,14 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class MapperCategoria {
-    public Categoria toDomain(CategoriaData  categoriaData){
+    public Categoria toCateg(CategoriaData  categoriaData){
         return new Categoria(
                 categoriaData.getIdCategoria(),
                 categoriaData.getNombreCategoria(),
                 categoriaData.getDescripcionCategoria()
         );
     }
-    public CategoriaData toData(Categoria categoria){
+    public CategoriaData toCatData(Categoria categoria){
         return new CategoriaData(
                 categoria.getIdCategoria(),
                 categoria.getNombreCategoria(),

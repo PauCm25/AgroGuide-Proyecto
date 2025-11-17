@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class MapperCultivo {
-    public Cultivo toDomain (CultivoData cultivoData) {
+    public Cultivo toCultivo (CultivoData cultivoData) {
         return new Cultivo(
                 cultivoData.getIdCultivo(),
                 cultivoData.getTipoSuelo(),
@@ -14,7 +14,7 @@ public class MapperCultivo {
                 cultivoData.getNombreCultivo()
         );
     }
-    public CultivoData toData (Cultivo cultivo) {
+    public CultivoData toCultData (Cultivo cultivo) {
       return new CultivoData(
               cultivo.getIdCultivo(),
               cultivo.getNombreCultivo(),
