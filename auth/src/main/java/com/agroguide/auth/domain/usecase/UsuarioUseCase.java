@@ -54,6 +54,16 @@ public class UsuarioUseCase {
         if(!esPasswordSegura(usuario.getPassword())){
            errores.add("La contraseña debe contener 8 caracteres, 1 mayuscula y 1 simbolo");
         }
+
+        if (usuario.getTipoUsuario() != null) {
+
+            String rol = usuario.getTipoUsuario().trim().toUpperCase();
+            if (!(rol.equals("AGRICULTOR") || rol.equals("TÉCNICO")
+                    || rol.equals("TECNICO") || rol.equals("ADMINISTRADOR"))) {
+                errores.add("El rol debe ser AGRICULTOR, TÉCNICO o ADMINISTRADOR");
+            }
+        }
+
         if (!errores.isEmpty()) {
             throw new IllegalArgumentException(String.join(" | ", errores));
         }
