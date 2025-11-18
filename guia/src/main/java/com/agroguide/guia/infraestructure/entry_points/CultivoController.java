@@ -28,7 +28,7 @@ public class CultivoController {
 
         if (cultivoValidadaGuardada.getIdCultivo() != null) {
             return ResponseEntity.ok(cultivoValidadaGuardada); //Valida si se guardó bien por medio del ID.
-            //Si no es nulo, devuelve un 200 con el producto guardado
+            //Si no es nulo, devuelve un 200 con el cultivo guardado
         }
         return new  ResponseEntity<>(cultivoValidadaGuardada, HttpStatus.CONFLICT);
         //Si el id es nulo, devuelve un 409
@@ -52,7 +52,7 @@ public class CultivoController {
         Cultivo cultivoValidadaEncontrada = cultivoUseCase.consultarCultivo(idCultivo);
         if (cultivoValidadaEncontrada.getIdCultivo() != null) {
             return new  ResponseEntity<>(cultivoValidadaEncontrada, HttpStatus.OK);
-            //Si existe, retorna 200 con el producto
+            //Si existe, retorna 200 con el cultivo
         }
         //Si no existe, retorna un 404 con un cultivo vacío
         return new  ResponseEntity<>(cultivoValidadaEncontrada, HttpStatus.NOT_FOUND);
