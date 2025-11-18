@@ -17,10 +17,6 @@ public class UsuarioUseCase {
         try{
             validacionCamposUsuario(usuario);
             listaErrores(usuario);
-            Usuario usarioExistente=usuarioGateway.buscarPorEmail(usuario.getEmail());
-            if(usarioExistente!=null && usarioExistente.getId()!=usuario.getId()){
-                throw new IllegalArgumentException("El usuario existe en el sistema");
-            }
             String passwordEncriptado= encrypterGateway.encrypt(usuario.getPassword());
             usuario.setPassword(passwordEncriptado);
             return usuarioGateway.guardar(usuario);
@@ -34,7 +30,7 @@ public class UsuarioUseCase {
 
     }
 
-    private void listaErrores(Usuario usuario) {
+    private static void listaErrores(Usuario usuario) {
         List<String> errores =new ArrayList<>();
         if (usuario.getNombre()==null|| usuario.getNombre().isBlank()){
             errores.add("El nombre es requerido");
@@ -46,30 +42,20 @@ public class UsuarioUseCase {
             errores.add("El email debe tener '@'");
         }
         if (usuario.getPassword()==null || usuario.getPassword().isBlank()){
-            errores.add("La contraseña no puede estar vacía");
+            errores.add("Debe seleccionar una región");
         }
         if(usuario.getEdad()==null|| usuario.getEdad()<15){
-            errores.add("Debe ser mayor de 15 años para registrarse");
+            errores.add("El edad debe ser mayor a 15");
         }
         if(!esPasswordSegura(usuario.getPassword())){
            errores.add("La contraseña debe contener 8 caracteres, 1 mayuscula y 1 simbolo");
         }
-
-        if (usuario.getTipoUsuario() != null) {
-
-            String rol = usuario.getTipoUsuario().trim().toUpperCase();
-            if (!(rol.equals("AGRICULTOR") || rol.equals("TÉCNICO")
-                    || rol.equals("TECNICO") || rol.equals("ADMINISTRADOR"))) {
-                errores.add("El rol debe ser AGRICULTOR, TÉCNICO o ADMINISTRADOR");
-            }
-        }
-
         if (!errores.isEmpty()) {
             throw new IllegalArgumentException(String.join(" | ", errores));
         }
     }
 
-    private void validacionCamposUsuario(Usuario usuario) {
+    private static void validacionCamposUsuario(Usuario usuario) {
         if(
                 //ISBLANK= verifica si un valor esta nulo o con espacios en blanco
                 usuario.getNombre()==null|| usuario.getNombre().isBlank()||
@@ -83,7 +69,7 @@ public class UsuarioUseCase {
     }
 
     //ESTUDIAR PORQUE ESTATICA
-    private boolean esPasswordSegura(String password) {
+    private static boolean esPasswordSegura(String password) {
         return password != null &&
                 password.length() >= 8 &&
                 password.matches(".*[A-Z].*") &&        // al menos una mayúscula
