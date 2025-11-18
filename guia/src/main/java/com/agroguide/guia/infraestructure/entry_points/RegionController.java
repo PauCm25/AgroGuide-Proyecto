@@ -1,10 +1,9 @@
 package com.agroguide.guia.infraestructure.entry_points;
 
 
-import com.agroguide.guia.domain.model.Categoria;
+
 import com.agroguide.guia.domain.model.Region;
 import com.agroguide.guia.domain.usecase.RegionUseCase;
-import com.agroguide.guia.infraestructure.driver_adapter.jpa_repository.categoria.CategoriaData;
 import com.agroguide.guia.infraestructure.driver_adapter.jpa_repository.region.RegionData;
 import com.agroguide.guia.infraestructure.mapper.MapperRegion;
 import lombok.RequiredArgsConstructor;
