@@ -17,6 +17,16 @@ public class UsuarioUseCase {
         try{
             validacionCamposUsuario(usuario);
             listaErrores(usuario);
+            Usuario usuarioExistente = null;
+            try {
+                usuarioExistente = usuarioGateway.buscarPorEmail(usuario.getEmail());
+            } catch (Exception ignore) {
+                // Si el gateway lanza porque no encontró, lo tratamos como "no existe"
+                usuarioExistente = null;
+            }
+            if (usuarioExistente != null && usuarioExistente.getId() != null) {
+                throw new IllegalArgumentException("El usuario ya está registrado en el sistema");
+            }
             String passwordEncriptado= encrypterGateway.encrypt(usuario.getPassword());
             usuario.setPassword(passwordEncriptado);
             return usuarioGateway.guardar(usuario);
@@ -130,10 +140,11 @@ public class UsuarioUseCase {
     public Usuario buscarPorEmail(String email) {
         try {
             return usuarioGateway.buscarPorEmail(email);
-        }catch(Exception e){
+        } catch(Exception e) {
             throw new IllegalArgumentException("No existe usuario con el email " + email);
         }
     }
+
 
 }
 
