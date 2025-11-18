@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface FavoritosDataJpaRepository extends JpaRepository<FavoritosData,Long> {
     Page<FavoritosData> findByUsuarioId(Long usuarioId, Pageable pageable);
-    FavoritosData findByUsuarioIdAndIdGuia(Long usuarioId, Long idGuia);
+    FavoritosData findByUsuarioIdAndIdGuia(Long idGuia, Long usuarioId);
 }
