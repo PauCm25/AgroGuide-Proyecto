@@ -34,7 +34,7 @@ public class UsuarioUseCase {
 
     }
 
-    private static void listaErrores(Usuario usuario) {
+    private void listaErrores(Usuario usuario) {
         List<String> errores =new ArrayList<>();
         if (usuario.getNombre()==null|| usuario.getNombre().isBlank()){
             errores.add("El nombre es requerido");
@@ -46,10 +46,10 @@ public class UsuarioUseCase {
             errores.add("El email debe tener '@'");
         }
         if (usuario.getPassword()==null || usuario.getPassword().isBlank()){
-            errores.add("Debe seleccionar una región");
+            errores.add("La contraseña no puede estar vacía");
         }
         if(usuario.getEdad()==null|| usuario.getEdad()<15){
-            errores.add("El edad debe ser mayor a 15");
+            errores.add("Debe ser mayor de 15 años para registrarse");
         }
         if(!esPasswordSegura(usuario.getPassword())){
            errores.add("La contraseña debe contener 8 caracteres, 1 mayuscula y 1 simbolo");
@@ -59,7 +59,7 @@ public class UsuarioUseCase {
         }
     }
 
-    private static void validacionCamposUsuario(Usuario usuario) {
+    private void validacionCamposUsuario(Usuario usuario) {
         if(
                 //ISBLANK= verifica si un valor esta nulo o con espacios en blanco
                 usuario.getNombre()==null|| usuario.getNombre().isBlank()||
@@ -73,7 +73,7 @@ public class UsuarioUseCase {
     }
 
     //ESTUDIAR PORQUE ESTATICA
-    private static boolean esPasswordSegura(String password) {
+    private boolean esPasswordSegura(String password) {
         return password != null &&
                 password.length() >= 8 &&
                 password.matches(".*[A-Z].*") &&        // al menos una mayúscula
