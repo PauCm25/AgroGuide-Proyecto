@@ -27,7 +27,6 @@ public class Guia {
     private Cultivo cultivo;
     private Region region;
     private Categoria categoria;
-    private List<Favoritos> favs;
 
 
     //SOLO ADMINISTRADORES Y TÉCNICOS
