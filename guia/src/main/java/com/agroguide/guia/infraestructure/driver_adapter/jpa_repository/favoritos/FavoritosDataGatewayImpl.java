@@ -28,8 +28,8 @@ public class FavoritosDataGatewayImpl implements FavoritosGateway {
     }
 
     @Override
-    public void eliminarDeFavoritos(Long usuarioId, Long idGuia) {
-        FavoritosData favorito = repository.findByUsuarioIdAndIdGuia(usuarioId, idGuia);
+    public void eliminarDeFavoritos(Long idGuia, Long usuarioId) {
+        FavoritosData favorito = repository.findByUsuarioIdAndIdGuia(idGuia, usuarioId);
         if (favorito == null) {
             throw new FavoritoNoExisteException("No se encontró el favorito para eliminar");
         }
