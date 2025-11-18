@@ -33,7 +33,7 @@ public class CategoriaController {
         //Si el id es nulo, devuelve un 409
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{idCategoria}")
     public ResponseEntity<String> deleteCategoria(@PathVariable Long idCategoria) {
         try{
             categoriaUseCase.eliminarCategoria(idCategoria);
@@ -45,7 +45,7 @@ public class CategoriaController {
         }
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{idCategoria}")
     public ResponseEntity<Categoria> findByIdCategoria(@PathVariable Long idCategoria) {
         //Ejecuta lógica de negocio para buscar por ID
         Categoria categoriaValidadaEncontrada = categoriaUseCase.consultarCategoria(idCategoria);
@@ -53,7 +53,7 @@ public class CategoriaController {
             return new  ResponseEntity<>(categoriaValidadaEncontrada, HttpStatus.OK);
             //Si existe, retorna 200 con el producto
         }
-        //Si no existe, retorna un 404 con un producto vacío
+        //Si no existe, retorna un 404 con una categoria vacía
         return new  ResponseEntity<>(categoriaValidadaEncontrada, HttpStatus.NOT_FOUND);
     }
 
@@ -74,7 +74,7 @@ public class CategoriaController {
 
 
     @GetMapping("/categorias")
-    public ResponseEntity<List<Categoria>> findAllProductos(
+    public ResponseEntity<List<Categoria>> findAllCategorias(
             @RequestParam(defaultValue = "0") int page, //la pagina por defecto es 0
             @RequestParam(defaultValue = "10")int size)  //El tamaño por defecto es de 10
     {
