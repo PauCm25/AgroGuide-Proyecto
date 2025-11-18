@@ -18,7 +18,7 @@ public class FavoritosData {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long idFav;
 
-    private Long idUsuario;
+    private Long usuarioId;
     private String tituloGuia;
     private String autorGuia;
 

@@ -33,7 +33,7 @@ public class GuiaData {
     private String estadoGuia;
 
     //Relación 1:M de la tabla guias con la tabla favoritos
-    @OneToMany(mappedBy = "guias", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "guia", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FavoritosData> favs;
 
 

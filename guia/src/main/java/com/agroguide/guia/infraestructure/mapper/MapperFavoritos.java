@@ -10,7 +10,7 @@ public class MapperFavoritos {
     public Favoritos toFavs(FavoritosData favoritosData) {
         Favoritos fav = new Favoritos();
         fav.setIdFav(favoritosData.getIdFav());
-        fav.setIdUsuario(favoritosData.getIdUsuario());
+        fav.setIdUsuario(favoritosData.getUsuarioId());
         fav.setIdGuia(favoritosData.getGuia().getIdGuia());
         fav.setTituloGuia(favoritosData.getTituloGuia());
         fav.setAutorGuia(favoritosData.getAutorGuia());
@@ -23,7 +23,7 @@ public class MapperFavoritos {
         //ESTO TAMBIEN
         guiaData.setIdGuia(favoritosData.getIdGuia());
         favData.setIdFav(favoritosData.getIdFav());
-        favData.setIdUsuario(favoritosData.getIdUsuario());
+        favData.setUsuarioId(favoritosData.getIdUsuario());
         //TENER EN CUENTA ESTO
         favData.setGuia(guiaData);
         favData.setTituloGuia(favoritosData.getTituloGuia());
