@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface FavoritosGateway {
 
-    Favoritos AgregarFavs(Favoritos favoritos);
-    void EliminarDeFav(Long idGuia, Long usuarioId);
-    List<Favoritos> ListarGuias(int page, int size);
+    Favoritos agregarFavs(Favoritos favoritos);
+    void eliminarDeFavoritos(Long idGuia, Long usuarioId);
+    List<Favoritos> listarFavoritosPorUsuario(Long usuarioId, int page, int size);
 }
