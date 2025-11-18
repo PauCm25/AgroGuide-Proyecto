@@ -30,7 +30,6 @@ public class UsuarioUseCase {
 
     }
 
-
     private static void listaErrores(Usuario usuario) {
         List<String> errores =new ArrayList<>();
         if (usuario.getNombre()==null|| usuario.getNombre().isBlank()){

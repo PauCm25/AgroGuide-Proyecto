@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import com.agroguide.guia.domain.exception.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @RequiredArgsConstructor
 public class FavoritosUseCase {
@@ -19,7 +20,6 @@ public class FavoritosUseCase {
     private final FavoritosGateway favoritosGateway;
     private final GuiaGateway guiaGateway;
     private final UsuarioGateway usuarioGateway;
-    private final GuiaUseCase guiaUseCase;
 
     public Favoritos agregarAFavoritos (Long usuarioId, Long idGuia) {
         //verificar que el usuario exista
@@ -41,8 +41,22 @@ public class FavoritosUseCase {
         favoritos.setAutorGuia(guia.getNombreAutor());
 
         //guardar el objeto
-        return favoritosGateway.AgregarFavs(favoritos);
+        return favoritosGateway.agregarFavs(favoritos);
     }
 
+    public List<Favoritos> consultarFavoritos(Long usuarioId, int page, int size) {
+        try {
+            return favoritosGateway.listarFavoritosPorUsuario(usuarioId, page, size);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Error al consultar los favoritos del usuario con ID: " + usuarioId);
+        }
+    }
+
+    public void eliminarDeFavoritos(Long idGuia, Long usuarioId) {
+        if (!usuarioGateway.usuarioExiste(usuarioId)) {
+            throw new UsuarioNoEncontradoException("Usuario no encontrado con ID: " + usuarioId);
+        }
+        favoritosGateway.eliminarDeFavoritos(usuarioId, idGuia);
+    }
 
 }

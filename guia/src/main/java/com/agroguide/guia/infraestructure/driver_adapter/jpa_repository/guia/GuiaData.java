@@ -29,7 +29,6 @@ public class GuiaData {
 
     private String fechaPublicacion;
     private String nombreAutor;
-    private String etiquetas;
 
     private String estadoGuia;
 

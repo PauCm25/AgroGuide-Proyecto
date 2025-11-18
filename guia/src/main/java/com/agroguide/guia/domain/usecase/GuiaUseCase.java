@@ -1,6 +1,6 @@
 package com.agroguide.guia.domain.usecase;
 
-import com.agroguide.guia.domain.exception.EstadoNoEstablecido;
+import com.agroguide.guia.domain.exception.EstadoNoEstablecidoException;
 import com.agroguide.guia.domain.exception.GuiaNoExisteException;
 import com.agroguide.guia.domain.model.Guia;
 import com.agroguide.guia.domain.model.gateway.GuiaGateway;
@@ -14,16 +14,16 @@ public class GuiaUseCase {
     private final GuiaGateway guiaGateway;
 
     public Guia crearGuia(Guia guia){
-        //Condicional para hacer que el nombre y el precio sean obligatorios en el producto
-        //si ambos son nulos, no se guarda el producto
+        //Condicional para hacer que varios atributos sean obligatorios para guardar
+        //si ambos son nulos, no se guarda la guia
         if(guia.getTitulo() == null && guia.getCultivo() == null
                 && guia.getDescripcion() == null
-                && guia.getRegion() == null && guia.getEtiquetas() == null){
+                && guia.getRegion() == null){
             throw new NullPointerException("Ingrese atributos correctamente - crearGuia");
         }
 
         guia.setEstadoGuia("PENDIENTE");
-        return guiaGateway.crear(guia); //Si esta bien, guarda el producto
+        return guiaGateway.crear(guia); //Si esta bien, guarda la guía
     }
 
     public void eliminarGuia(Long id){
@@ -33,7 +33,7 @@ public class GuiaUseCase {
         try {
             guiaGateway.eliminarPorId(id);
         } catch (Exception e) {
-            throw new IllegalArgumentException("Error al eliminar la guía. No existe");
+            throw new GuiaNoExisteException("Error al eliminar la guía. No existe");
         }
     }
 
@@ -54,17 +54,17 @@ public class GuiaUseCase {
 
     public Guia actualizarGuia(Guia guia){
         //Valida primero que el ID no sea nulo. Si lo es, muestra una excepcion
-        //Si no es nulo, actualiza el producto existente en la BD
-        //retorna el producto actualizado
+        //Si no es nulo, actualiza la guia existente en la BD
+        //retorna la guia actualizado
         if(guia.getIdGuia() == null){
             throw new NullPointerException("Revise que el ID de la guía exista - actualizarGuia");
         }
         return guiaGateway.actualizarPorId(guia);
     }
 
-    public List<Guia> consultarGuias(int page, int size) //No necesita parametros, porque retorna todos los productos
+    public List<Guia> consultarGuias(int page, int size)
     {
-        //Obtiene todos los productos existentes en la BD
+        //Obtiene todos las guias existentes en la BD
         //Retorna una lista
         //si hay error en la consulta, atrapa la excepcion
         try {
@@ -79,7 +79,7 @@ public class GuiaUseCase {
             throw new GuiaNoExisteException("No existe la guía");
         }
         if (guia.getEstadoGuia() == null){
-            throw new EstadoNoEstablecido("La guía no tiene estado");
+            throw new EstadoNoEstablecidoException("La guía no tiene estado");
         }
         return guiaGateway.actualizarEstadoGuia(guia);
     }

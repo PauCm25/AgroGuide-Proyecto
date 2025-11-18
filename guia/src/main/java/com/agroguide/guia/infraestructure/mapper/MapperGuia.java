@@ -20,7 +20,6 @@ public class MapperGuia {
         guia.setDescripcion(guiaData.getDescripcion());
         guia.setFechaPublicacion(guiaData.getFechaPublicacion());
         guia.setNombreAutor(guiaData.getNombreAutor());
-        guia.setEtiquetas(guiaData.getEtiquetas());
         guia.setEstadoGuia(guiaData.getEstadoGuia());
 
         guia.setCultivo(mapperCultivo.toCultivo(guiaData.getCultivos()));
@@ -36,7 +35,6 @@ public class MapperGuia {
         guiaData.setDescripcion(guia.getDescripcion());
         guiaData.setFechaPublicacion(guia.getFechaPublicacion());
         guiaData.setNombreAutor(guia.getNombreAutor());
-        guiaData.setEtiquetas(guia.getEtiquetas());
         guiaData.setEstadoGuia(guia.getEstadoGuia());
 
         guiaData.setCultivos(mapperCultivo.toCultData(guia.getCultivo()));
