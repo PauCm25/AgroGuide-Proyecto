@@ -27,7 +27,7 @@ public class CategoriaController {
 
         if (catValidadaGuardada.getIdCategoria() != null) {
             return ResponseEntity.ok(catValidadaGuardada); //Valida si se guardó bien por medio del ID.
-            //Si no es nulo, devuelve un 200 con el producto guardado
+            //Si no es nulo, devuelve un 200 con la categoria guardada
         }
         return new  ResponseEntity<>(catValidadaGuardada, HttpStatus.CONFLICT);
         //Si el id es nulo, devuelve un 409
@@ -51,7 +51,7 @@ public class CategoriaController {
         Categoria categoriaValidadaEncontrada = categoriaUseCase.consultarCategoria(idCategoria);
         if (categoriaValidadaEncontrada.getIdCategoria() != null) {
             return new  ResponseEntity<>(categoriaValidadaEncontrada, HttpStatus.OK);
-            //Si existe, retorna 200 con el producto
+            //Si existe, retorna 200 con la categoria
         }
         //Si no existe, retorna un 404 con una categoria vacía
         return new  ResponseEntity<>(categoriaValidadaEncontrada, HttpStatus.NOT_FOUND);
