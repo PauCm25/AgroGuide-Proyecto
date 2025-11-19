@@ -60,6 +60,14 @@ public class UsuarioUseCase {
         if(!esPasswordSegura(usuario.getPassword())){
            errores.add("La contraseña debe contener 8 caracteres, 1 mayuscula y 1 simbolo");
         }
+        if (usuario.getTipoUsuario() == null || usuario.getTipoUsuario().isBlank()) {
+            errores.add("El tipoUsuario es obligatorio");
+        } else {
+            String tipo = usuario.getTipoUsuario().toLowerCase();
+            if (!(tipo.equals("administrador") || tipo.equals("tecnico") || tipo.equals("agricultor"))) {
+                errores.add("El tipoUsuario debe ser administrador, tecnico o agricultor");
+            }
+        }
         if (!errores.isEmpty()) {
             throw new IllegalArgumentException(String.join(" | ", errores));
         }
