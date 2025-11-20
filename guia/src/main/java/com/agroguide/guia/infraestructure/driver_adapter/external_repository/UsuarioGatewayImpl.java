@@ -24,7 +24,7 @@ public class UsuarioGatewayImpl implements UsuarioGateway {
         try {
             UsuarioInfoDTO dto = restTemplate
                     .getForEntity(
-                            "http://localhost:8080/api/agroguide/usuario/" + usuarioId,
+                            "https://agroguide-auth-1zd2.onrender.com/api/agroguide/usuario/" + usuarioId,
                             UsuarioInfoDTO.class
                     )
                     .getBody();
