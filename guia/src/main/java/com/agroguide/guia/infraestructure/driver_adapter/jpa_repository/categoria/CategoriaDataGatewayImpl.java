@@ -22,6 +22,16 @@ public class CategoriaDataGatewayImpl implements CategoriaGateway {
     private final MapperCategoria mapper;
 
     @Override
+    public boolean existeCategoria(Long id) {
+        try {
+            return repository.existsById(id);
+
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    @Override
     public Categoria crear(Categoria categoria) {
         CategoriaData categoriaData = mapper.toCatData(categoria);
         return mapper.toCateg(repository.save(categoriaData));

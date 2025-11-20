@@ -23,6 +23,16 @@ public class RegionDataGatewayImpl implements RegionGateway {
     private final MapperRegion mapper;
 
     @Override
+    public boolean existeRegion(Long id) {
+        try {
+            return repository.existsById(id);
+
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    @Override
     public Region crear(Region region) {
         RegionData regionData = mapper.toRegData(region);
         return mapper.toRegion(repository.save(regionData));

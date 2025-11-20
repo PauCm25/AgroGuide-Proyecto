@@ -23,6 +23,16 @@ public class CultivoDataGatewayImpl implements CultivoGateway {
     private final MapperCultivo mapper;
 
     @Override
+    public boolean existeCultivo(Long id) {
+        try {
+            return repository.existsById(id);
+
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    @Override
     public Cultivo crear(Cultivo cultivo) {
         CultivoData cultivoData = mapper.toCultData(cultivo);
         return mapper.toCultivo(repository.save(cultivoData));
