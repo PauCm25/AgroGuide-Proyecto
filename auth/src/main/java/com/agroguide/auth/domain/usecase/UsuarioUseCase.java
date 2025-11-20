@@ -69,7 +69,8 @@ public class UsuarioUseCase {
             errores.add("El tipoUsuario es obligatorio");
         } else {
             String tipo = usuario.getTipoUsuario().toLowerCase();
-            if (!(tipo.equals("administrador") || tipo.equals("tecnico") || tipo.equals("agricultor"))) {
+            if (!(tipo.equals("administrador") || tipo.equals("tecnico") || tipo.equals("agricultor")
+                    || tipo.equals("técnico"))) {
                 errores.add("El tipoUsuario debe ser administrador, tecnico o agricultor");
             }
         }
