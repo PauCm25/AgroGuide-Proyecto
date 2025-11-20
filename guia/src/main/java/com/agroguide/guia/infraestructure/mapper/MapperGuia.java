@@ -22,9 +22,9 @@ public class MapperGuia {
         guia.setNombreAutor(guiaData.getNombreAutor());
         guia.setEstadoGuia(guiaData.getEstadoGuia());
 
-        guia.setCultivo(mapperCultivo.toCultivo(guiaData.getCultivos()));
-        guia.setRegion(mapperRegion.toRegion(guiaData.getRegiones()));
-        guia.setCategoria(mapperCategoria.toCateg(guiaData.getCategorias()));
+        guia.setCultivo(mapperCultivo.toCultivo(guiaData.getCultivo()));
+        guia.setRegion(mapperRegion.toRegion(guiaData.getRegion()));
+        guia.setCategoria(mapperCategoria.toCateg(guiaData.getCategoria()));
         return guia;
     }
     public GuiaData toGuiaData(Guia guia) {
@@ -37,9 +37,9 @@ public class MapperGuia {
         guiaData.setNombreAutor(guia.getNombreAutor());
         guiaData.setEstadoGuia(guia.getEstadoGuia());
 
-        guiaData.setCultivos(mapperCultivo.toCultData(guia.getCultivo()));
-        guiaData.setRegiones(mapperRegion.toRegData(guia.getRegion()));
-        guiaData.setCategorias(mapperCategoria.toCatData(guia.getCategoria()));
+        guiaData.setCultivo(mapperCultivo.toCultData(guia.getCultivo()));
+        guiaData.setRegion(mapperRegion.toRegData(guia.getRegion()));
+        guiaData.setCategoria(mapperCategoria.toCatData(guia.getCategoria()));
         return guiaData;
     }
 }

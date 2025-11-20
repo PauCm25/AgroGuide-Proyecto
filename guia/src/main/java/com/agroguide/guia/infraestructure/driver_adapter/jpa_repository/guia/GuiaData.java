@@ -39,13 +39,13 @@ public class GuiaData {
 
     @ManyToOne
     @JoinColumn(name = "id_cultivo")
-    private CultivoData cultivos;
+    private CultivoData cultivo;
 
     @ManyToOne
     @JoinColumn(name = "id_region")
-    private RegionData regiones;
+    private RegionData region;
 
     @ManyToOne
     @JoinColumn(name = "id_categoria")
-    private CategoriaData categorias;
+    private CategoriaData categoria;
 }
