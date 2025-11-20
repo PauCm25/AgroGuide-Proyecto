@@ -15,6 +15,8 @@ public class MapperUsuarioInfo {
         return new UsuarioInfo(
                 dto.getId(),
                 dto.getNombre(),
+                dto.getEmail(),
+                dto.getNumeroTelefono(),
                 dto.getTipoUsuario()
         );
     }
