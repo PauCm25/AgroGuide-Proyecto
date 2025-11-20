@@ -60,12 +60,13 @@ public class GuiaController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<Guia> updateGuia(@RequestBody GuiaData guiaData) {
+    public ResponseEntity<Guia> updateGuia(@RequestBody GuiaData guiaData,
+                                           @PathVariable Long usuarioId) {
         try {
             //Convierte guiaData a guia
             Guia guia = mapper.toGuia(guiaData);
             //Usa la lógica de negocio para actualizar
-            Guia guiaValidadaActualizada = guiaUseCase.actualizarGuia(guia);
+            Guia guiaValidadaActualizada = guiaUseCase.actualizarGuia(guia, usuarioId);
             //Si todoo esta bien, retorna 200 con guia actualizada
             return new  ResponseEntity<>(guiaValidadaActualizada, HttpStatus.OK);
         } catch (Exception e) {

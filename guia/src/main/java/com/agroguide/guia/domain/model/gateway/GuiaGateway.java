@@ -12,4 +12,5 @@ public interface GuiaGateway {
     Guia actualizarPorId(Guia guia);
     List<Guia> ListarGuias(int page, int size);
     Guia actualizarEstadoGuia(Guia guia);
+    boolean existeGuia(Long idRegion);
 }

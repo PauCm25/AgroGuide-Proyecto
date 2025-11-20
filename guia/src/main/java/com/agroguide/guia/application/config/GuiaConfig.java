@@ -32,7 +32,10 @@ public class GuiaConfig {
 
     @Bean
     public GuiaUseCase guiaUseCase(GuiaGateway guiaGateway, NotificationGateway notificationGateway,
-                                   UsuarioGateway usuarioGateway) {
-        return new  GuiaUseCase(guiaGateway, notificationGateway, usuarioGateway);
+                                   UsuarioGateway usuarioGateway, CultivoGateway cultivoGateway,
+                                   CategoriaGateway categoriaGateway,
+                                   RegionGateway regionGateway) {
+        return new  GuiaUseCase(guiaGateway, notificationGateway, usuarioGateway,
+                cultivoGateway, categoriaGateway, regionGateway);
     }
 }

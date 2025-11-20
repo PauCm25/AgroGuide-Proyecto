@@ -21,6 +21,16 @@ public class GuiaDataGatewayImpl implements GuiaGateway {
     private final MapperGuia mapper;
 
     @Override
+    public boolean existeGuia(Long id) {
+        try {
+            return repository.existsById(id);
+
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    @Override
     public Guia crear(Guia guia, Long usuarioId) {
         GuiaData guiaData = mapper.toGuiaData(guia);
         return mapper.toGuia(repository.save(guiaData));
