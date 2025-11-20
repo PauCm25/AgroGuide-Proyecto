@@ -12,9 +12,11 @@ public class MapperUsuario {
                 usuarioData.getNombre(),
                 usuarioData.getEmail(),
                 usuarioData.getPassword(),
+                usuarioData.getTelefono(),
                 usuarioData.getTipoUsuario(),
                 usuarioData.getUbicacion(),
                 usuarioData.getEdad()
+
         );
     }
     public UsuarioData toData(Usuario usuario){
@@ -23,8 +25,10 @@ public class MapperUsuario {
                 usuario.getNombre(),
                 usuario.getEmail(),
                 usuario.getPassword(),
+                usuario.getTelefono(),
                 usuario.getTipoUsuario(),
                 usuario.getUbicacion(),
-                usuario.getEdad());
+                usuario.getEdad()
+        );
     }
 }

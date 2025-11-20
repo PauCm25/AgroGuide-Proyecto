@@ -6,6 +6,7 @@ import com.agroguide.auth.infraestructure.driver_adapters.UsuarioData;
 import com.agroguide.auth.infraestructure.entry_points.dto.LoginResponse;
 import com.agroguide.auth.infraestructure.mapper.MapperUsuario;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -41,19 +42,20 @@ public class UsuarioController {
                     //SON LAS VARIABLES QUE RETORNA EN EL USUARIO
                     usuarioValidadoLogin.getId(),
                     usuarioValidadoLogin.getNombre(),
-                    usuarioValidadoLogin.getTipoUsuario()
+                    usuarioValidadoLogin.getTipoUsuario(),
+                    usuarioValidadoLogin.getTelefono()
             );
             return ResponseEntity.ok(respuesta);
         }catch (IllegalArgumentException e) {
             LoginResponse respuesta = new LoginResponse
                     ( e.getMessage(),
-                            null, null, null
+                            null, null, null,null
                     );
             return ResponseEntity.ok((respuesta));
         }catch (Exception e) {
             LoginResponse error = new LoginResponse
                     ( "Error en el login: " + e.getMessage(),
-                            null, null, null);
+                            null, null, null,null);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
         }
     }
@@ -67,17 +69,18 @@ public class UsuarioController {
                     "Usuario encontrado",
                     usuarioValidadoEncontrado.getId(),
                     usuarioValidadoEncontrado.getNombre(),
-                    usuarioValidadoEncontrado.getTipoUsuario()
+                    usuarioValidadoEncontrado.getTipoUsuario(),
+                    usuarioValidadoEncontrado.getTelefono()
             );
             return ResponseEntity.ok(resuesta);
         }catch (IllegalArgumentException e){
             LoginResponse respuesta = new LoginResponse(
-                    e.getMessage(), null, null, null
+                    e.getMessage(), null, null, null,null
             );
             return ResponseEntity.ok(respuesta);
         }catch(RuntimeException e) {
             LoginResponse error = new LoginResponse(
-                    e.getMessage(), null, null, null
+                    e.getMessage(), null, null, null,null
             );
             return ResponseEntity.ok(error);
 
@@ -85,7 +88,7 @@ public class UsuarioController {
             // Fallback
             LoginResponse error = new LoginResponse(
                     "Error interno",
-                    null, null, null
+                    null, null, null,null
             );
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
         }
@@ -99,28 +102,41 @@ public class UsuarioController {
                     "Usuario actualizado correctamente",
                     usuarioActualizado.getId(),
                     usuarioActualizado.getNombre(),
-                    usuarioActualizado.getTipoUsuario()
+                    usuarioActualizado.getTipoUsuario(),
+                    usuarioActualizado.getTelefono()
             );
             return ResponseEntity.ok(respuesta);
 
         } catch (IllegalArgumentException e) {
             LoginResponse respuesta = new LoginResponse(e.getMessage(),
-                    null, null, null);
+                    null, null, null, null);
             return ResponseEntity.ok(respuesta);
         } catch (Exception e) {
             LoginResponse error = new LoginResponse
                     ("Error al actualizar el usuario: ",
-                            null, null, null);
+                            null, null, null,null);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
         }
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<String>deleteByIdUsuario(@PathVariable Long id){
+    public ResponseEntity<LoginResponse>deleteByIdUsuario(@PathVariable Long id){
         try {
             usuarioUseCase.eliminarPorIdUsuario(id);
-            return ResponseEntity.ok().body("Usario eliminado");
-        }catch (Exception e){
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.ok(new LoginResponse(
+                    "Usuario eliminado",
+                    id, null, null,null
+            ));
+        }catch (IllegalArgumentException e){
+            return ResponseEntity.ok(new  LoginResponse(
+                    e.getMessage(),
+                    null, null, null, null
+            ));
+        }catch (RuntimeException e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new LoginResponse(
+                            "Error interno inesperado: " + e.getMessage(),
+                            null, null, null, null
+                    ));
         }
     }
 

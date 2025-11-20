@@ -14,8 +14,8 @@ public class Usuario {
     private String nombre;
     private String email;
     private String password;
+    private String telefono;
     private String tipoUsuario;//agricultor, desarrollador,etc
     private String ubicacion;
     private Integer edad;
-
 }

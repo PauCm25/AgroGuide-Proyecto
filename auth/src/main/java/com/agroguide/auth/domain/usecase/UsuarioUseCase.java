@@ -54,6 +54,11 @@ public class UsuarioUseCase {
         if (usuario.getPassword()==null || usuario.getPassword().isBlank()){
             errores.add("Debe seleccionar una región");
         }
+        if (usuario.getTelefono() == null || usuario.getTelefono().isBlank()) {
+            errores.add("El teléfono es obligatorio");
+        } else if (!usuario.getTelefono().matches("\\d{10}")) {
+            errores.add("El teléfono debe contener exactamente 10 dígitos numéricos");
+        }
         if(usuario.getEdad()==null|| usuario.getEdad()<15){
             errores.add("El edad debe ser mayor a 15");
         }
@@ -129,10 +134,27 @@ public class UsuarioUseCase {
         return usuarioGateway.actualizarUsuario(usuario);
     }
     public void eliminarPorIdUsuario(Long id) {
+        if (id == null || id <= 0) {
+            throw new IllegalArgumentException("El ID es inválido");
+        }
+        Usuario usuarioExiste;
+        try {
+            usuarioExiste = usuarioGateway.buscarPorID(id);
+
+        } catch (Exception e) {
+            String mensaje = e.getMessage() != null ? e.getMessage().toLowerCase() : "";
+            if (mensaje.contains("no encontrado") || mensaje.contains("not found")) {
+                throw new IllegalArgumentException("Usuario con ID " + id + " no existe en la base de datos");
+            }
+            throw new RuntimeException("Error técnico al consultar usuario por ID: " + e.getMessage());
+        }
+        if(usuarioExiste==null||usuarioExiste.getId()==null){
+            throw new IllegalArgumentException("Usuario con ID"+buscarPorId(id).getId()+"no encontrado");
+        }
         try {
             usuarioGateway.elimnarPorID(id);
         } catch (Exception e) {
-            throw  new RuntimeException("No se elimino el usuario: ");
+            throw new RuntimeException("No se eliminó el usuario con ID " + id + ": " + e.getMessage());
         }
     }
     public Usuario buscarPorId(Long id) {
