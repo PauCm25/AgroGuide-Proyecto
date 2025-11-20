@@ -35,7 +35,7 @@ public class GuiaController {
         //Si el id es nulo, devuelve un 409
     }
 
-    @DeleteMapping("/{idGuia}")
+    @DeleteMapping("/{idGuia}/{usuarioId}")
     public ResponseEntity<String> deleteGuia(@PathVariable Long idGuia,
                                              @PathVariable Long usuarioId) {
         try{
@@ -48,10 +48,11 @@ public class GuiaController {
         }
     }
 
-    @GetMapping("/{idGuia}")
-    public ResponseEntity<Guia> findByIdGuia(@PathVariable Long idGuia) {
+    @GetMapping("/{idGuia}/{usuarioId}")
+    public ResponseEntity<Guia> findByIdGuia(@PathVariable Long idGuia,
+                                             @PathVariable Long usuarioId) {
         //Ejecuta lógica de negocio para buscar por ID
-        Guia guiaValidadaEncontrada = guiaUseCase.consultarGuia(idGuia);
+        Guia guiaValidadaEncontrada = guiaUseCase.consultarGuia(idGuia, usuarioId);
         if (guiaValidadaEncontrada.getIdGuia() != null) {
             return new  ResponseEntity<>(guiaValidadaEncontrada, HttpStatus.OK);
             //Si existe, retorna 200 con la region
@@ -60,8 +61,8 @@ public class GuiaController {
         return new  ResponseEntity<>(guiaValidadaEncontrada, HttpStatus.NOT_FOUND);
     }
 
-    @PutMapping("/{idGuia}/update")
-    public ResponseEntity<Guia> updateGuia(@PathVariable Long idGuia, @RequestParam Long usuarioId,
+    @PutMapping("/{idGuia}/{usuarioId}/update")
+    public ResponseEntity<Guia> updateGuia(@PathVariable Long idGuia, @PathVariable Long usuarioId,
                                            @RequestBody GuiaData guiaData) {
         try {
             // Convierte GuiaData a dominio Guia
@@ -82,14 +83,15 @@ public class GuiaController {
 
 
 
-    @GetMapping("/guias")
+    @GetMapping("/guias/{usuarioId}")
     public ResponseEntity<List<Guia>> findAllGuias(
+            @PathVariable Long usuarioId,
             @RequestParam(defaultValue = "0") int page, //la pagina por defecto es 0
             @RequestParam(defaultValue = "10")int size)  //El tamaño por defecto es de 10
     {
 
         //Ejecuta lógica de negocio para obtener las guias paginadas
-        List<Guia> guias = guiaUseCase.consultarGuias(page, size);
+        List<Guia> guias = guiaUseCase.consultarGuias(page, size, usuarioId);
         if (guias.isEmpty()) {
             return new  ResponseEntity<>(HttpStatus.CONFLICT); //Si no hay guias, retorna 409
         }
@@ -97,9 +99,9 @@ public class GuiaController {
     }
 
 
-    @PutMapping("/{idGuia}/estado")
+    @PutMapping("/{idGuia}/{usuarioId}/estado")
     public ResponseEntity<Guia> updateEstadoGuia(@PathVariable Long idGuia,
-                                                 @RequestParam Long usuarioId,
+                                                 @PathVariable Long usuarioId,
                                                  @RequestParam String nuevoEstado) {
         try {
             // Llamamos al caso de uso con los parámetros directamente

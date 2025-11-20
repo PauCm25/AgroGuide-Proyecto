@@ -27,7 +27,7 @@ public class CultivoUseCase {
         // Validar rol permitido (SOLO ADMIN)
         String rol = usuarioInfo.getTipoUsuario().trim().toUpperCase();
         if (!(rol.equals("ADMINISTRADOR"))) {
-            throw new IllegalArgumentException("Solo ADMINISTRADOR puede crear regiones");
+            throw new IllegalArgumentException("Solo ADMINISTRADOR puede crear cultivos");
         }
 
         if(cultivo.getNombreCultivo() == null && cultivo.getTipoSuelo() == null
@@ -47,12 +47,12 @@ public class CultivoUseCase {
         // Validar rol permitido (SOLO ADMIN)
         String rol = usuarioInfo.getTipoUsuario().trim().toUpperCase();
         if (!(rol.equals("ADMINISTRADOR"))) {
-            throw new IllegalArgumentException("Solo ADMINISTRADOR puede crear regiones");
+            throw new IllegalArgumentException("Solo ADMINISTRADOR puede eliminar cultivos");
         }
         try {
             cultivoGateway.eliminarPorId(id);
         } catch (Exception e) {
-            throw new CultivoNoExisteException("Error al eliminar la guía. No existe");
+            throw new CultivoNoExisteException("Error al eliminar el cultivo. No existe");
         }
     }
 
@@ -81,7 +81,7 @@ public class CultivoUseCase {
         // Validar rol permitido (SOLO ADMIN)
         String rol = usuarioInfo.getTipoUsuario().trim().toUpperCase();
         if (!(rol.equals("ADMINISTRADOR"))) {
-            throw new IllegalArgumentException("Solo ADMINISTRADOR puede crear regiones");
+            throw new IllegalArgumentException("Solo ADMINISTRADOR puede actualizar cultivos");
         }
         if(cultivo.getIdCultivo() == null){
             throw new CultivoNoExisteException("Revise que el cultivo exista - actualizarCultivo");

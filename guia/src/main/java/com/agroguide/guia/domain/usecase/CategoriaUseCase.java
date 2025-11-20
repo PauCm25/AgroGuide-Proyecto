@@ -25,7 +25,7 @@ public class CategoriaUseCase {
         // Validar rol permitido (SOLO ADMIN)
         String rol = usuarioInfo.getTipoUsuario().trim().toUpperCase();
         if (!(rol.equals("ADMINISTRADOR"))) {
-            throw new IllegalArgumentException("Solo ADMINISTRADOR puede crear regiones");
+            throw new IllegalArgumentException("Solo ADMINISTRADOR puede crear categorias");
         }
         if(categoria.getNombreCategoria() == null && categoria.getDescripcionCategoria() == null){
             throw new NullPointerException("Ingrese atributos correctamente - crearCategoria");
@@ -43,12 +43,12 @@ public class CategoriaUseCase {
         // Validar rol permitido (SOLO ADMIN)
         String rol = usuarioInfo.getTipoUsuario().trim().toUpperCase();
         if (!(rol.equals("ADMINISTRADOR"))) {
-            throw new IllegalArgumentException("Solo ADMINISTRADOR puede crear regiones");
+            throw new IllegalArgumentException("Solo ADMINISTRADOR puede eliminar categorias");
         }
         try {
             categoriaGateway.eliminarPorId(id);
         } catch (Exception e) {
-            throw new CategoriaNoExisteException("Error al eliminar la guía. No existe");
+            throw new CategoriaNoExisteException("Error al eliminar la categoria. No existe");
         }
     }
 
@@ -77,7 +77,7 @@ public class CategoriaUseCase {
         // Validar rol permitido (SOLO ADMIN)
         String rol = usuarioInfo.getTipoUsuario().trim().toUpperCase();
         if (!(rol.equals("ADMINISTRADOR"))) {
-            throw new IllegalArgumentException("Solo ADMINISTRADOR puede crear regiones");
+            throw new IllegalArgumentException("Solo ADMINISTRADOR puede actualizar categorias");
         }
         if(categoria.getIdCategoria() == null){
             throw new CategoriaNoExisteException("Revise que la categoria exista - actualizarCategoria");

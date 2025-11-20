@@ -14,28 +14,20 @@ import java.util.List;
 @Setter //MODIFICA ATRIBUTO
 @Getter //OBTENER ATRIBUTO
 public class Guia {
-    //Atributos-------------------------------------------------
-    private Long idGuia; //automatica
 
-    //EXCLUSIVA PARA ROL TÉCNICO Y ADMIN
+    private Long idGuia;
     private Long idTecnico;
     private String titulo;
     private String descripcion;
-    private String fechaPublicacion;
-    private String nombreAutor; // Esto se debe tomar automaticamente del usuario técnico que lo esté creando
+    private LocalDate fechaPublicacion;
+    private String nombreAutor;
+    private String estadoGuia;
 
-    private Cultivo cultivo;
-    private Region region;
-    private Categoria categoria;
-
-
-    //SOLO ADMINISTRADORES Y TÉCNICOS
-    private String estadoGuia; //Esto va a ser cuando ya se agreguen los atributos anteriores.
-    //Los estados van a ser PENDIENTE, APROBADO y RECHAZADO.
-    //Solo cuando estén  aprobados,
-
-
-    //Además, los usuarios agricultores no pueden tener acceso al CRUD de la guía.
+    // SOLO IDS DEL JSON
+    private Long idCultivo;
+    private Long idRegion;
+    private Long idCategoria;
 
 }
+
 

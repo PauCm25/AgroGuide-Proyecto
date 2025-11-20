@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class EventoNotificationDTO {
     private String tipo;
-    private String email;
-    private String numeroTelefono;
+    private String telefono;
     private String mensaje;
 }

@@ -1,9 +1,15 @@
 package com.agroguide.guia.infraestructure.mapper;
 
+import com.agroguide.guia.domain.model.Categoria;
+import com.agroguide.guia.domain.model.Cultivo;
 import com.agroguide.guia.domain.model.Guia;
+import com.agroguide.guia.domain.model.Region;
 import com.agroguide.guia.infraestructure.driver_adapter.jpa_repository.guia.GuiaData;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDate;
+
 @RequiredArgsConstructor
 @Component
 public class MapperGuia {
@@ -22,11 +28,14 @@ public class MapperGuia {
         guia.setNombreAutor(guiaData.getNombreAutor());
         guia.setEstadoGuia(guiaData.getEstadoGuia());
 
-        guia.setCultivo(mapperCultivo.toCultivo(guiaData.getCultivo()));
-        guia.setRegion(mapperRegion.toRegion(guiaData.getRegion()));
-        guia.setCategoria(mapperCategoria.toCateg(guiaData.getCategoria()));
+        guia.setIdCultivo(guiaData.getIdCultivo());
+        guia.setIdRegion(guiaData.getIdRegion());
+        guia.setIdCategoria(guiaData.getIdCategoria());
+
         return guia;
     }
+
+
     public GuiaData toGuiaData(Guia guia) {
         GuiaData guiaData = new GuiaData();
         guiaData.setIdGuia(guia.getIdGuia());
@@ -37,10 +46,12 @@ public class MapperGuia {
         guiaData.setNombreAutor(guia.getNombreAutor());
         guiaData.setEstadoGuia(guia.getEstadoGuia());
 
-        guiaData.setCultivo(mapperCultivo.toCultData(guia.getCultivo()));
-        guiaData.setRegion(mapperRegion.toRegData(guia.getRegion()));
-        guiaData.setCategoria(mapperCategoria.toCatData(guia.getCategoria()));
+        guiaData.setIdCultivo(guia.getIdCultivo());
+        guiaData.setIdRegion(guia.getIdRegion());
+        guiaData.setIdCategoria(guia.getIdCategoria());
+
         return guiaData;
     }
+
 }
 

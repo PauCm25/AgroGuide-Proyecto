@@ -22,7 +22,7 @@ public class FavoritosController {
     private final FavoritosUseCase favoritosUseCase;
     private final MapperFavoritos mapper;
 
-    @PostMapping("/favoritos/{idGuia}/usuario/{usuarioId}")
+    @PostMapping("/{idGuia}/{usuarioId}")
     public ResponseEntity<Favoritos> agregarAFavoritos(@PathVariable Long idGuia,
                                                        @PathVariable Long usuarioId) {
         try {
@@ -35,7 +35,7 @@ public class FavoritosController {
         }
     }
 
-    @DeleteMapping("/favoritos/{idGuia}/usuario/{usuarioId}")
+    @DeleteMapping("/{idGuia}/usuario/{usuarioId}")
     public ResponseEntity<String> eliminarDeFavoritos(@PathVariable Long idGuia,
                                                       @PathVariable Long usuarioId) {
         try {
@@ -48,7 +48,7 @@ public class FavoritosController {
         }
     }
 
-    @GetMapping("/favoritos/usuario/{usuarioId}")
+    @GetMapping("/usuario/{usuarioId}")
     public ResponseEntity<List<Favoritos>> ListarFavoritos(
             @PathVariable Long usuarioId, //Se pide el id del usuario para ver solo su lista de favoritos
             @RequestParam(defaultValue = "0") int page, //la pagina por defecto es 0

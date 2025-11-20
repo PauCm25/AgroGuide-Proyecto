@@ -10,7 +10,6 @@ import lombok.Data;
 public class Notificacion {
 
     private String tipo;
-    private String email;
     private String numeroTelefono;
     private String mensaje;
 }

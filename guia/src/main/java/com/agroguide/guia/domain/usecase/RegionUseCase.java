@@ -55,7 +55,7 @@ public class RegionUseCase {
         try {
             regionGateway.eliminarPorId(id);
         } catch (Exception e) {
-            throw new RegionNoExisteException("Error al eliminar la guía. No existe");
+            throw new RegionNoExisteException("Error al eliminar la region. No existe");
         }
     }
 
