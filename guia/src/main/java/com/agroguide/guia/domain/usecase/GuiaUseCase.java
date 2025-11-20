@@ -4,6 +4,7 @@ import com.agroguide.guia.domain.exception.EstadoNoEstablecidoException;
 import com.agroguide.guia.domain.exception.GuiaNoExisteException;
 import com.agroguide.guia.domain.model.Guia;
 import com.agroguide.guia.domain.model.gateway.GuiaGateway;
+import com.agroguide.guia.domain.model.gateway.NotificationGateway;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.List;
 public class GuiaUseCase {
 
     private final GuiaGateway guiaGateway;
+    private final NotificationGateway notificationGateway;
 
     public Guia crearGuia(Guia guia){
         //Condicional para hacer que varios atributos sean obligatorios para guardar

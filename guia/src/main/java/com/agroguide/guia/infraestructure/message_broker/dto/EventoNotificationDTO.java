@@ -1,14 +1,15 @@
-package com.agroguide.guia.domain.model;
+package com.agroguide.guia.infraestructure.message_broker.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
-@Builder
 @AllArgsConstructor
-public class Notificacion {
-
+@NoArgsConstructor
+@Builder
+public class EventoNotificationDTO {
     private String tipo;
     private String email;
     private String numeroTelefono;
