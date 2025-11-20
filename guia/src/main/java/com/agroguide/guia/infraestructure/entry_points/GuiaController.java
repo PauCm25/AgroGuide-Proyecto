@@ -1,8 +1,7 @@
 package com.agroguide.guia.infraestructure.entry_points;
 
 
-import com.agroguide.guia.domain.exception.EstadoNoEstablecidoException;
-import com.agroguide.guia.domain.exception.GuiaNoExisteException;
+
 import com.agroguide.guia.domain.model.Guia;
 import com.agroguide.guia.domain.usecase.GuiaUseCase;
 import com.agroguide.guia.infraestructure.driver_adapter.jpa_repository.guia.GuiaData;
@@ -22,10 +21,11 @@ public class GuiaController {
     private final GuiaUseCase guiaUseCase;
     private final MapperGuia mapper;
 
-    @PostMapping("/save")
-    public ResponseEntity<Guia> saveGuia(@RequestBody GuiaData guiaData) {
+    @PostMapping("/save/{usuarioId}")
+    public ResponseEntity<Guia> saveGuia(@RequestBody GuiaData guiaData,
+                                         @PathVariable Long usuarioId) {
         Guia guia = mapper.toGuia(guiaData);
-        Guia GuiaValidadaGuardada = guiaUseCase.crearGuia(guia); //Ejecuta la lógica de negocio para guardar
+        Guia GuiaValidadaGuardada = guiaUseCase.crearGuia(guia, usuarioId); //Ejecuta la lógica de negocio para guardar
 
         if (GuiaValidadaGuardada.getIdGuia() != null) {
             return ResponseEntity.ok(GuiaValidadaGuardada); //Valida si se guardó bien por medio del ID.

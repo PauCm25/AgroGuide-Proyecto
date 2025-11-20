@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface GuiaGateway {
 
-    Guia crear (Guia guia);
+    Guia crear (Guia guia, Long usuarioId);
     void eliminarPorId(Long idGuia);
     Guia consultarPorId(Long idGuia);
     Guia actualizarPorId(Guia guia);

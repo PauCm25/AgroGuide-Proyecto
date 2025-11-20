@@ -21,7 +21,7 @@ public class GuiaDataGatewayImpl implements GuiaGateway {
     private final MapperGuia mapper;
 
     @Override
-    public Guia crear(Guia guia){
+    public Guia crear(Guia guia, Long usuarioId) {
         GuiaData guiaData = mapper.toGuiaData(guia);
         return mapper.toGuia(repository.save(guiaData));
     }
