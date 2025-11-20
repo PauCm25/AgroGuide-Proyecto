@@ -77,10 +77,20 @@ public class GuiaUseCase {
     }
 
 
-    public void eliminarGuia(Long id) {
-        //Elimina la guia por el ID
-        //Retorna un vacío
-        //Lanza excepcion en caso de haber error
+    public void eliminarGuia(Long id, Long usuarioId) {
+        // 1. Validar que el usuario exista
+        UsuarioInfo usuarioInfo = usuarioGateway.usuarioExiste(usuarioId);
+        if (usuarioInfo == null || usuarioInfo.getNombre() == null) {
+            throw new IllegalArgumentException("El usuario no existe en el sistema");
+        }
+
+        // 2. Validar rol
+        String rol = usuarioInfo.getTipoUsuario().trim().toUpperCase();
+
+        if (!(rol.equals("ADMINISTRADOR") || rol.equals("TECNICO") || rol.equals("TÉCNICO"))) {
+            throw new IllegalArgumentException("Solo ADMINISTRADOR o TECNICO pueden eliminar guías");
+        }
+
         try {
             guiaGateway.eliminarPorId(id);
         } catch (Exception e) {

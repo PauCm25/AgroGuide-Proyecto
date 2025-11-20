@@ -36,9 +36,10 @@ public class GuiaController {
     }
 
     @DeleteMapping("/{idGuia}")
-    public ResponseEntity<String> deleteGuia(@PathVariable Long idGuia) {
+    public ResponseEntity<String> deleteGuia(@PathVariable Long idGuia,
+                                             @PathVariable Long usuarioId) {
         try{
-            guiaUseCase.eliminarGuia(idGuia);
+            guiaUseCase.eliminarGuia(idGuia, usuarioId);
             //Si elimina bien, devuelve un 200 con un mensaje de guia eliminada
             return new  ResponseEntity<>("Guia eliminada", HttpStatus.OK);
         }catch (Exception e){
