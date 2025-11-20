@@ -12,4 +12,5 @@ public interface CategoriaGateway {
     Categoria consultarPorId(Long idCategoria);
     Categoria actualizarPorId(Categoria categoria);
     List<Categoria> ListarCategorias(int page, int size);
+    boolean existeCategoria(Long idCategoria);
 }

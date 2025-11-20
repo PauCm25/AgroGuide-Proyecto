@@ -13,4 +13,5 @@ public interface RegionGateway {
     Region consultarPorId(Long idRegion);
     Region actualizarPorId(Region region);
     List<Region> ListarRegiones(int page, int size);
+    boolean existeRegion(Long idRegion);
 }

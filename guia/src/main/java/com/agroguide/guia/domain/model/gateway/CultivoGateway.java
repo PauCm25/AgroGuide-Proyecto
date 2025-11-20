@@ -12,4 +12,5 @@ public interface CultivoGateway {
     Cultivo consultarPorId(Long idCultivo);
     Cultivo actualizarPorId(Cultivo cultivo);
     List<Cultivo> ListarCultivos(int page, int size);
+    boolean existeCultivo(Long idCultivo);
 }
