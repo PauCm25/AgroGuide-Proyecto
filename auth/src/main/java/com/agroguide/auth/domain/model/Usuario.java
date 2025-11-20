@@ -18,4 +18,6 @@ public class Usuario {
     private String tipoUsuario;//agricultor, desarrollador,etc
     private String ubicacion;
     private Integer edad;
+    //PRUEBA
+
 }
