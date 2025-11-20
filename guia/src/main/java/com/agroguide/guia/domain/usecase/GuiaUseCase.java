@@ -21,7 +21,6 @@ public class GuiaUseCase {
     private final RegionGateway regionGateway;
 
     public Guia crearGuia(Guia guia, Long usuarioId) {
-
         //Validar que el usuario exista
         UsuarioInfo usuarioInfo = usuarioGateway.usuarioExiste(usuarioId);
         if (usuarioInfo == null || usuarioInfo.getNombre() == null) {
@@ -88,6 +87,67 @@ public class GuiaUseCase {
             throw new GuiaNoExisteException("Error al eliminar la guía. No existe");
         }
     }
+
+    public Guia actualizarGuia(Long idGuia, Guia guiaDatosNuevos, Long usuarioId) {
+
+        // 1. Validar que el ID no venga nulo
+        if (idGuia == null) {
+            throw new IllegalArgumentException("Debe enviar el ID de la guía a actualizar");
+        }
+
+        // 2. Verificar que la guía exista en BD
+        if (!guiaGateway.existeGuia(idGuia)) {
+            throw new IllegalArgumentException("La guía no existe");
+        }
+
+        // 3. Validar que el usuario exista
+        UsuarioInfo usuarioInfo = usuarioGateway.usuarioExiste(usuarioId);
+        if (usuarioInfo == null || usuarioInfo.getNombre() == null) {
+            throw new IllegalArgumentException("El usuario no existe en el sistema");
+        }
+
+        // 4. Validar roles permitidos (solo admin o técnico)
+        String rol = usuarioInfo.getTipoUsuario().trim().toUpperCase();
+        if (!(rol.equals("ADMINISTRADOR") || rol.equals("TECNICO") || rol.equals("TÉCNICO"))) {
+            throw new IllegalArgumentException("Solo ADMINISTRADOR o TECNICO pueden actualizar guías");
+        }
+
+        // 5. Cargar guía original
+        Guia guiaOriginal = guiaGateway.consultarPorId(idGuia);
+
+        // 6. Validar datos obligatorios
+        if (guiaDatosNuevos.getTitulo() == null ||
+                guiaDatosNuevos.getDescripcion() == null ||
+                guiaDatosNuevos.getRegion() == null ||
+                guiaDatosNuevos.getCultivo() == null ||
+                guiaDatosNuevos.getCategoria() == null) {
+            throw new IllegalArgumentException("Debe enviar todos los datos obligatorios");
+        }
+
+        // 7. Validar cultivo, región y categoría
+        if (!cultivoGateway.existeCultivo(guiaDatosNuevos.getCultivo().getIdCultivo())) {
+            throw new IllegalArgumentException("El cultivo ingresado no existe");
+        }
+
+        if (!regionGateway.existeRegion(guiaDatosNuevos.getRegion().getIdRegion())) {
+            throw new IllegalArgumentException("La región ingresada no existe");
+        }
+
+        if (!categoriaGateway.existeCategoria(guiaDatosNuevos.getCategoria().getIdCategoria())) {
+            throw new IllegalArgumentException("La categoría ingresada no existe");
+        }
+
+        // 8. Actualizar los campos permitidos
+        guiaOriginal.setTitulo(guiaDatosNuevos.getTitulo());
+        guiaOriginal.setDescripcion(guiaDatosNuevos.getDescripcion());
+        guiaOriginal.setCultivo(guiaDatosNuevos.getCultivo());
+        guiaOriginal.setRegion(guiaDatosNuevos.getRegion());
+        guiaOriginal.setCategoria(guiaDatosNuevos.getCategoria());
+
+        // 9. Actualizar en BD
+        return guiaGateway.actualizarPorId(guiaOriginal);
+    }
+
 
     public Guia consultarGuia(Long id) {
         //Busca una guia por su ID

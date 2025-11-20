@@ -2,6 +2,7 @@ package com.agroguide.guia.infraestructure.entry_points;
 
 
 import com.agroguide.guia.domain.model.Categoria;
+import com.agroguide.guia.domain.model.gateway.UsuarioGateway;
 import com.agroguide.guia.domain.usecase.CategoriaUseCase;
 import com.agroguide.guia.infraestructure.driver_adapter.jpa_repository.categoria.CategoriaData;
 import com.agroguide.guia.infraestructure.mapper.MapperCategoria;
@@ -19,11 +20,13 @@ public class CategoriaController {
 
     private final CategoriaUseCase categoriaUseCase;
     private final MapperCategoria mapper;
+    private final UsuarioGateway usuarioGateway;
 
-    @PostMapping("/save")
-    public ResponseEntity<Categoria> saveCategoria(@RequestBody CategoriaData categoriaData) {
+    @PostMapping("/save/{usuarioId}")
+    public ResponseEntity<Categoria> saveCategoria(@RequestBody CategoriaData categoriaData,
+                                                   @PathVariable Long usuarioId) {
         Categoria categoria = mapper.toCateg(categoriaData);
-        Categoria catValidadaGuardada = categoriaUseCase.crearCategoria(categoria); //Ejecuta la lógica de negocio para guardar
+        Categoria catValidadaGuardada = categoriaUseCase.crearCategoria(categoria, usuarioId); //Ejecuta la lógica de negocio para guardar
 
         if (catValidadaGuardada.getIdCategoria() != null) {
             return ResponseEntity.ok(catValidadaGuardada); //Valida si se guardó bien por medio del ID.
@@ -33,10 +36,11 @@ public class CategoriaController {
         //Si el id es nulo, devuelve un 409
     }
 
-    @DeleteMapping("/{idCategoria}")
-    public ResponseEntity<String> deleteCategoria(@PathVariable Long idCategoria) {
+    @DeleteMapping("/{idCategoria}/{usuarioId}")
+    public ResponseEntity<String> deleteCategoria(@PathVariable Long idCategoria,
+                                                  @PathVariable Long usuarioId) {
         try{
-            categoriaUseCase.eliminarCategoria(idCategoria);
+            categoriaUseCase.eliminarCategoria(idCategoria, usuarioId);
             //Si elimina bien, devuelve un 200 con un mensaje de categoria eliminada
             return new  ResponseEntity<>("Categoria eliminada", HttpStatus.OK);
         }catch (Exception e){
@@ -57,13 +61,15 @@ public class CategoriaController {
         return new  ResponseEntity<>(categoriaValidadaEncontrada, HttpStatus.NOT_FOUND);
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<Categoria> updateCategoria(@RequestBody CategoriaData categoriaData) {
+    @PutMapping("/update/{usuarioId}")
+    public ResponseEntity<Categoria> updateCategoria(@RequestBody CategoriaData categoriaData,
+                                                     @PathVariable Long usuarioId) {
         try {
             //Convierte categoriaData a categoria
             Categoria categoria = mapper.toCateg(categoriaData);
             //Usa la lógica de negocio para actualizar
-            Categoria categoriaValidadaActualizada = categoriaUseCase.actualizarCategoria(categoria);
+            Categoria categoriaValidadaActualizada = categoriaUseCase.actualizarCategoria(categoria,
+                    usuarioId);
             //Si todoo esta bien, retorna 200 con categoria actualizada
             return new  ResponseEntity<>(categoriaValidadaActualizada, HttpStatus.OK);
         } catch (Exception e) {

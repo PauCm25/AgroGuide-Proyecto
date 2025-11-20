@@ -2,7 +2,9 @@ package com.agroguide.guia.domain.usecase;
 
 import com.agroguide.guia.domain.exception.CategoriaNoExisteException;
 import com.agroguide.guia.domain.model.Categoria;
+import com.agroguide.guia.domain.model.UsuarioInfo;
 import com.agroguide.guia.domain.model.gateway.CategoriaGateway;
+import com.agroguide.guia.domain.model.gateway.UsuarioGateway;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
@@ -11,20 +13,38 @@ import java.util.List;
 public class CategoriaUseCase {
 
     private final CategoriaGateway categoriaGateway;
+    private final UsuarioGateway usuarioGateway;
 
-    public Categoria crearCategoria(Categoria categoria) {
-        //Condicional para hacer que nombre y descripción sean obligatorios
-        //si ambos son nulos, no se guarda la categoría
+    public Categoria crearCategoria(Categoria categoria, Long usuarioId) {
+        // Validar que el usuario exista
+        UsuarioInfo usuarioInfo = usuarioGateway.usuarioExiste(usuarioId);
+        if (usuarioInfo == null || usuarioInfo.getNombre() == null) {
+            throw new IllegalArgumentException("El usuario no existe en el sistema");
+        }
+
+        // Validar rol permitido (SOLO ADMIN)
+        String rol = usuarioInfo.getTipoUsuario().trim().toUpperCase();
+        if (!(rol.equals("ADMINISTRADOR"))) {
+            throw new IllegalArgumentException("Solo ADMINISTRADOR puede crear regiones");
+        }
         if(categoria.getNombreCategoria() == null && categoria.getDescripcionCategoria() == null){
             throw new NullPointerException("Ingrese atributos correctamente - crearCategoria");
         }
         return categoriaGateway.crear(categoria); //Si esta bien, guarda la categoria
     }
 
-    public void eliminarCategoria(Long id){
-        //Elimina la categoria por el ID
-        //Retorna un vacío
-        //Lanza excepcion en caso de haber error
+    public void eliminarCategoria(Long id, Long usuarioId){
+        // Validar que el usuario exista
+        UsuarioInfo usuarioInfo = usuarioGateway.usuarioExiste(usuarioId);
+        if (usuarioInfo == null || usuarioInfo.getNombre() == null) {
+            throw new IllegalArgumentException("El usuario no existe en el sistema");
+        }
+
+        // Validar rol permitido (SOLO ADMIN)
+        String rol = usuarioInfo.getTipoUsuario().trim().toUpperCase();
+        if (!(rol.equals("ADMINISTRADOR"))) {
+            throw new IllegalArgumentException("Solo ADMINISTRADOR puede crear regiones");
+        }
         try {
             categoriaGateway.eliminarPorId(id);
         } catch (Exception e) {
@@ -47,10 +67,18 @@ public class CategoriaUseCase {
         }
     }
 
-    public Categoria actualizarCategoria(Categoria categoria){
-        //Valida primero que el ID no sea nulo. Si lo es, muestra una excepcion
-        //Si no es nulo, actualiza la categoria existente en la BD
-        //retorna la categoria actualizado
+    public Categoria actualizarCategoria(Categoria categoria, Long usuarioId){
+        // Validar que el usuario exista
+        UsuarioInfo usuarioInfo = usuarioGateway.usuarioExiste(usuarioId);
+        if (usuarioInfo == null || usuarioInfo.getNombre() == null) {
+            throw new IllegalArgumentException("El usuario no existe en el sistema");
+        }
+
+        // Validar rol permitido (SOLO ADMIN)
+        String rol = usuarioInfo.getTipoUsuario().trim().toUpperCase();
+        if (!(rol.equals("ADMINISTRADOR"))) {
+            throw new IllegalArgumentException("Solo ADMINISTRADOR puede crear regiones");
+        }
         if(categoria.getIdCategoria() == null){
             throw new CategoriaNoExisteException("Revise que la categoria exista - actualizarCategoria");
         }

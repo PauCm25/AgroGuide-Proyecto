@@ -59,21 +59,26 @@ public class GuiaController {
         return new  ResponseEntity<>(guiaValidadaEncontrada, HttpStatus.NOT_FOUND);
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<Guia> updateGuia(@RequestBody GuiaData guiaData,
-                                           @PathVariable Long usuarioId) {
+    @PutMapping("/{idGuia}/update")
+    public ResponseEntity<Guia> updateGuia(@PathVariable Long idGuia, @RequestParam Long usuarioId,
+                                           @RequestBody GuiaData guiaData) {
         try {
-            //Convierte guiaData a guia
-            Guia guia = mapper.toGuia(guiaData);
-            //Usa la lógica de negocio para actualizar
-            Guia guiaValidadaActualizada = guiaUseCase.actualizarGuia(guia, usuarioId);
-            //Si todoo esta bien, retorna 200 con guia actualizada
-            return new  ResponseEntity<>(guiaValidadaActualizada, HttpStatus.OK);
+            // Convierte GuiaData a dominio Guia
+            Guia guiaDatosNuevos = mapper.toGuia(guiaData);
+
+            // Llama al caso de uso con idGuia, datos nuevos y usuarioId
+            Guia guiaActualizada = guiaUseCase.actualizarGuia(idGuia, guiaDatosNuevos, usuarioId);
+
+            return new ResponseEntity<>(guiaActualizada, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            // Errores de validación enviados por el caso de uso
+            return ResponseEntity.badRequest().body(null);
         } catch (Exception e) {
-            //si hay error, atrapa excepcion y retorna un conflict sin cuerpo
-            return  ResponseEntity.status(HttpStatus.CONFLICT).build();
+            // Otros errores inesperados
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
     }
+
 
 
     @GetMapping("/guias")
@@ -92,18 +97,19 @@ public class GuiaController {
 
 
     @PutMapping("/{idGuia}/estado")
-    public ResponseEntity<Guia> updateEstadoGuia(@PathVariable Long idGuia, @RequestBody GuiaData guiaData) {
+    public ResponseEntity<Guia> updateEstadoGuia(@PathVariable Long idGuia,
+                                                 @RequestParam Long usuarioId,
+                                                 @RequestParam String nuevoEstado) {
         try {
-            Guia guiaEstado = new Guia();
-            guiaEstado.setIdGuia(idGuia);
-            guiaEstado.setEstadoGuia(guiaData.getEstadoGuia());
-
-            Guia estadoGuiaActualizada = guiaUseCase.actualizarEstGuia(guiaEstado);
-            return new ResponseEntity<>(estadoGuiaActualizada, HttpStatus.OK);
-
+            // Llamamos al caso de uso con los parámetros directamente
+            Guia guiaActualizada = guiaUseCase.actualizarEstGuia(idGuia, nuevoEstado, usuarioId);
+            return new ResponseEntity<>(guiaActualizada, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(null);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
     }
+
 
 }

@@ -3,7 +3,9 @@ package com.agroguide.guia.domain.usecase;
 
 import com.agroguide.guia.domain.exception.RegionNoExisteException;
 import com.agroguide.guia.domain.model.Region;
+import com.agroguide.guia.domain.model.UsuarioInfo;
 import com.agroguide.guia.domain.model.gateway.RegionGateway;
+import com.agroguide.guia.domain.model.gateway.UsuarioGateway;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
@@ -12,20 +14,44 @@ import java.util.List;
 public class RegionUseCase {
 
     private final RegionGateway regionGateway;
+    private final UsuarioGateway usuarioGateway;
 
-    public Region crearRegion(Region region) {
-        //Condicional para hacer que nombre y departamento sean obligatorios
-        //si ambos son nulos, no se guarda la region
-        if(region.getNombreRegion() == null && region.getDepartamento() == null){
+    public Region crearRegion(Region region, Long usuarioId) {
+        // Validar que el usuario exista
+        UsuarioInfo usuarioInfo = usuarioGateway.usuarioExiste(usuarioId);
+        if (usuarioInfo == null || usuarioInfo.getNombre() == null) {
+            throw new IllegalArgumentException("El usuario no existe en el sistema");
+        }
+
+        // Validar rol permitido (SOLO ADMIN)
+        String rol = usuarioInfo.getTipoUsuario().trim().toUpperCase();
+        if (!(rol.equals("ADMINISTRADOR"))) {
+            throw new IllegalArgumentException("Solo ADMINISTRADOR puede crear regiones");
+        }
+
+        // Validar campos obligatorios de la región
+        if (region.getNombreRegion() == null && region.getDepartamento() == null) {
             throw new NullPointerException("Ingrese atributos correctamente - crearRegion");
         }
-        return regionGateway.crear(region); //Si esta bien, guarda la region
+
+        // Guardar la región
+        return regionGateway.crear(region);
     }
 
-    public void eliminarRegion(Long id){
-        //Elimina la region por el ID
-        //Retorna un vacío
-        //Lanza excepcion en caso de haber error
+    public void eliminarRegion(Long id, Long usuarioId){
+
+        // Validar que el usuario exista
+        UsuarioInfo usuarioInfo = usuarioGateway.usuarioExiste(usuarioId);
+        if (usuarioInfo == null || usuarioInfo.getNombre() == null) {
+            throw new IllegalArgumentException("El usuario no existe en el sistema");
+        }
+
+        // Validar rol permitido (solo ADMINISTRADOR)
+        String rol = usuarioInfo.getTipoUsuario().trim().toUpperCase();
+        if (!rol.equals("ADMINISTRADOR")) {
+            throw new IllegalArgumentException("Solo ADMINISTRADOR puede eliminar regiones");
+        }
+
         try {
             regionGateway.eliminarPorId(id);
         } catch (Exception e) {
@@ -48,13 +74,23 @@ public class RegionUseCase {
         }
     }
 
-    public Region actualizarRegion(Region region){
-        //Valida primero que el ID no sea nulo. Si lo es, muestra una excepcion
-        //Si no es nulo, actualiza la region existente en la BD
-        //retorna la categoria actualizado
+    public Region actualizarRegion(Region region, Long usuarioId) {
+
         if(region.getIdRegion() == null){
             throw new RegionNoExisteException("Revise que la region exista - actualizarRegion");
         }
+        // Validar que el usuario exista
+        UsuarioInfo usuarioInfo = usuarioGateway.usuarioExiste(usuarioId);
+        if (usuarioInfo == null || usuarioInfo.getNombre() == null) {
+            throw new IllegalArgumentException("El usuario no existe en el sistema");
+        }
+
+        // Validar rol permitido (solo ADMINISTRADOR)
+        String rol = usuarioInfo.getTipoUsuario().trim().toUpperCase();
+        if (!rol.equals("ADMINISTRADOR")) {
+            throw new IllegalArgumentException("Solo ADMINISTRADOR puede eliminar regiones");
+        }
+
         return regionGateway.actualizarPorId(region);
     }
 

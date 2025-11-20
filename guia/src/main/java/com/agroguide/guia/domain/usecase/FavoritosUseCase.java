@@ -3,6 +3,7 @@ package com.agroguide.guia.domain.usecase;
 
 import com.agroguide.guia.domain.model.Favoritos;
 import com.agroguide.guia.domain.model.Guia;
+import com.agroguide.guia.domain.model.UsuarioInfo;
 import com.agroguide.guia.domain.model.gateway.FavoritosGateway;
 import com.agroguide.guia.domain.model.gateway.GuiaGateway;
 import com.agroguide.guia.domain.model.gateway.UsuarioGateway;
@@ -23,7 +24,8 @@ public class FavoritosUseCase {
 
     public Favoritos agregarAFavoritos (Long usuarioId, Long idGuia) {
         //verificar que el usuario exista
-        if (!usuarioGateway.usuarioExiste(usuarioId)) {
+        UsuarioInfo usuarioInfo = usuarioGateway.usuarioExiste(usuarioId);
+        if (usuarioInfo == null || usuarioInfo.getNombre() == null) {
             throw new UsuarioNoEncontradoException("Usuario no encontrado con ID: " + usuarioId);
         }
 
@@ -45,6 +47,12 @@ public class FavoritosUseCase {
     }
 
     public List<Favoritos> consultarFavoritos(Long usuarioId, int page, int size) {
+
+        UsuarioInfo usuarioInfo = usuarioGateway.usuarioExiste(usuarioId);
+        if (usuarioInfo == null || usuarioInfo.getNombre() == null) {
+            throw new UsuarioNoEncontradoException("Usuario no encontrado con ID: " + usuarioId);
+        }
+
         try {
             return favoritosGateway.listarFavoritosPorUsuario(usuarioId, page, size);
         } catch (Exception e) {
@@ -53,7 +61,8 @@ public class FavoritosUseCase {
     }
 
     public void eliminarDeFavoritos(Long idGuia, Long usuarioId) {
-        if (!usuarioGateway.usuarioExiste(usuarioId)) {
+        UsuarioInfo usuarioInfo = usuarioGateway.usuarioExiste(usuarioId);
+        if (usuarioInfo == null || usuarioInfo.getNombre() == null) {
             throw new UsuarioNoEncontradoException("Usuario no encontrado con ID: " + usuarioId);
         }
         favoritosGateway.eliminarDeFavoritos(usuarioId, idGuia);

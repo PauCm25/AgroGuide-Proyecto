@@ -16,18 +16,21 @@ public class GuiaConfig {
     }
 
     @Bean
-    public CategoriaUseCase categoriaUseCase(CategoriaGateway categoriaGateway) {
-        return new CategoriaUseCase(categoriaGateway);
+    public CategoriaUseCase categoriaUseCase(CategoriaGateway categoriaGateway,
+                                             UsuarioGateway usuarioGateway) {
+        return new CategoriaUseCase(categoriaGateway, usuarioGateway);
     }
 
     @Bean
-    public CultivoUseCase cultivoUseCase(CultivoGateway cultivoGateway) {
-        return new CultivoUseCase(cultivoGateway);
+    public CultivoUseCase cultivoUseCase(CultivoGateway cultivoGateway,
+                                         UsuarioGateway usuarioGateway) {
+        return new CultivoUseCase(cultivoGateway, usuarioGateway);
     }
 
     @Bean
-    public RegionUseCase regionUseCase(RegionGateway regionGateway) {
-        return new RegionUseCase(regionGateway);
+    public RegionUseCase regionUseCase(RegionGateway regionGateway,
+                                       UsuarioGateway usuarioGateway) {
+        return new RegionUseCase(regionGateway, usuarioGateway);
     }
 
     @Bean

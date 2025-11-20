@@ -4,7 +4,9 @@ package com.agroguide.guia.domain.usecase;
 import com.agroguide.guia.domain.exception.CultivoNoExisteException;
 
 import com.agroguide.guia.domain.model.Cultivo;
+import com.agroguide.guia.domain.model.UsuarioInfo;
 import com.agroguide.guia.domain.model.gateway.CultivoGateway;
+import com.agroguide.guia.domain.model.gateway.UsuarioGateway;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
@@ -13,10 +15,21 @@ import java.util.List;
 public class CultivoUseCase {
 
     private final CultivoGateway cultivoGateway;
+    private final UsuarioGateway usuarioGateway;
 
-    public Cultivo crearCultivo(Cultivo cultivo) {
-        //Condicional para hacer que nombre, tipo de suelo y clima sean obligatorios
-        //si ambos son nulos, no se guarda la categoría
+    public Cultivo crearCultivo(Cultivo cultivo, Long usuarioId) {
+        // Validar que el usuario exista
+        UsuarioInfo usuarioInfo = usuarioGateway.usuarioExiste(usuarioId);
+        if (usuarioInfo == null || usuarioInfo.getNombre() == null) {
+            throw new IllegalArgumentException("El usuario no existe en el sistema");
+        }
+
+        // Validar rol permitido (SOLO ADMIN)
+        String rol = usuarioInfo.getTipoUsuario().trim().toUpperCase();
+        if (!(rol.equals("ADMINISTRADOR"))) {
+            throw new IllegalArgumentException("Solo ADMINISTRADOR puede crear regiones");
+        }
+
         if(cultivo.getNombreCultivo() == null && cultivo.getTipoSuelo() == null
                 && cultivo.getClimaRecomendado() == null){
             throw new NullPointerException("Ingrese atributos correctamente - crearCultivo");
@@ -24,10 +37,18 @@ public class CultivoUseCase {
         return cultivoGateway.crear(cultivo); //Si esta bien, guarda el cultivo
     }
 
-    public void eliminarCultivo(Long id){
-        //Elimina el cultivo por el ID
-        //Retorna un vacío
-        //Lanza excepcion en caso de haber error
+    public void eliminarCultivo(Long id, Long usuarioId){
+        // Validar que el usuario exista
+        UsuarioInfo usuarioInfo = usuarioGateway.usuarioExiste(usuarioId);
+        if (usuarioInfo == null || usuarioInfo.getNombre() == null) {
+            throw new IllegalArgumentException("El usuario no existe en el sistema");
+        }
+
+        // Validar rol permitido (SOLO ADMIN)
+        String rol = usuarioInfo.getTipoUsuario().trim().toUpperCase();
+        if (!(rol.equals("ADMINISTRADOR"))) {
+            throw new IllegalArgumentException("Solo ADMINISTRADOR puede crear regiones");
+        }
         try {
             cultivoGateway.eliminarPorId(id);
         } catch (Exception e) {
@@ -50,10 +71,18 @@ public class CultivoUseCase {
         }
     }
 
-    public Cultivo actualizarCultivo(Cultivo cultivo){
-        //Valida primero que el ID no sea nulo. Si lo es, muestra una excepcion
-        //Si no es nulo, actualiza el cultivo existente en la BD
-        //retorna el cultivo actualizado
+    public Cultivo actualizarCultivo(Cultivo cultivo, Long usuarioId){
+        // Validar que el usuario exista
+        UsuarioInfo usuarioInfo = usuarioGateway.usuarioExiste(usuarioId);
+        if (usuarioInfo == null || usuarioInfo.getNombre() == null) {
+            throw new IllegalArgumentException("El usuario no existe en el sistema");
+        }
+
+        // Validar rol permitido (SOLO ADMIN)
+        String rol = usuarioInfo.getTipoUsuario().trim().toUpperCase();
+        if (!(rol.equals("ADMINISTRADOR"))) {
+            throw new IllegalArgumentException("Solo ADMINISTRADOR puede crear regiones");
+        }
         if(cultivo.getIdCultivo() == null){
             throw new CultivoNoExisteException("Revise que el cultivo exista - actualizarCultivo");
         }

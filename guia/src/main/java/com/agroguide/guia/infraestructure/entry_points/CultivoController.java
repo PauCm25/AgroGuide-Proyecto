@@ -21,10 +21,11 @@ public class CultivoController {
     private final CultivoUseCase cultivoUseCase;
     private final MapperCultivo mapper;
 
-    @PostMapping("/save")
-    public ResponseEntity<Cultivo> saveCultivo(@RequestBody CultivoData cultivoData) {
+    @PostMapping("/save/{usuarioId}")
+    public ResponseEntity<Cultivo> saveCultivo(@RequestBody CultivoData cultivoData,
+                                               @PathVariable Long usuarioId) {
         Cultivo cultivo = mapper.toCultivo(cultivoData);
-        Cultivo cultivoValidadaGuardada = cultivoUseCase.crearCultivo(cultivo); //Ejecuta la lógica de negocio para guardar
+        Cultivo cultivoValidadaGuardada = cultivoUseCase.crearCultivo(cultivo, usuarioId); //Ejecuta la lógica de negocio para guardar
 
         if (cultivoValidadaGuardada.getIdCultivo() != null) {
             return ResponseEntity.ok(cultivoValidadaGuardada); //Valida si se guardó bien por medio del ID.
@@ -34,10 +35,11 @@ public class CultivoController {
         //Si el id es nulo, devuelve un 409
     }
 
-    @DeleteMapping("/{idCultivo}")
-    public ResponseEntity<String> deleteCultivo(@PathVariable Long idCultivo) {
+    @DeleteMapping("/{idCultivo}/{usuarioId}")
+    public ResponseEntity<String> deleteCultivo(@PathVariable Long idCultivo,
+                                                @PathVariable Long usuarioId) {
         try{
-            cultivoUseCase.eliminarCultivo(idCultivo);
+            cultivoUseCase.eliminarCultivo(idCultivo, usuarioId);
             //Si elimina bien, devuelve un 200 con un mensaje de cultivo eliminado
             return new  ResponseEntity<>("Cultivo eliminado", HttpStatus.OK);
         }catch (Exception e){
@@ -58,13 +60,14 @@ public class CultivoController {
         return new  ResponseEntity<>(cultivoValidadaEncontrada, HttpStatus.NOT_FOUND);
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<Cultivo> updateCultivo(@RequestBody CultivoData cultivoData) {
+    @PutMapping("/update/{usuarioId}")
+    public ResponseEntity<Cultivo> updateCultivo(@RequestBody CultivoData cultivoData,
+                                                 @PathVariable Long usuarioId) {
         try {
             //Convierte cultivoData a cultivo
             Cultivo cultivo = mapper.toCultivo(cultivoData);
             //Usa la lógica de negocio para actualizar
-            Cultivo cultivoValidadaActualizada = cultivoUseCase.actualizarCultivo(cultivo);
+            Cultivo cultivoValidadaActualizada = cultivoUseCase.actualizarCultivo(cultivo,usuarioId);
             //Si todoo esta bien, retorna 200 con cultivo actualizado
             return new  ResponseEntity<>(cultivoValidadaActualizada, HttpStatus.OK);
         } catch (Exception e) {

@@ -23,7 +23,8 @@ public class FavoritosController {
     private final MapperFavoritos mapper;
 
     @PostMapping("/favoritos/{idGuia}/usuario/{usuarioId}")
-    public ResponseEntity<Favoritos> agregarAFavoritos(@PathVariable Long idGuia, @PathVariable Long usuarioId) {
+    public ResponseEntity<Favoritos> agregarAFavoritos(@PathVariable Long idGuia,
+                                                       @PathVariable Long usuarioId) {
         try {
             Favoritos favorito = favoritosUseCase.agregarAFavoritos(usuarioId, idGuia);
             return new ResponseEntity<>(favorito, HttpStatus.OK);
@@ -35,7 +36,8 @@ public class FavoritosController {
     }
 
     @DeleteMapping("/favoritos/{idGuia}/usuario/{usuarioId}")
-    public ResponseEntity<String> eliminarDeFavoritos(@PathVariable Long idGuia, @PathVariable Long usuarioId) {
+    public ResponseEntity<String> eliminarDeFavoritos(@PathVariable Long idGuia,
+                                                      @PathVariable Long usuarioId) {
         try {
             favoritosUseCase.eliminarDeFavoritos(idGuia, usuarioId);
             return ResponseEntity.ok("Guia eliminada de favoritos");

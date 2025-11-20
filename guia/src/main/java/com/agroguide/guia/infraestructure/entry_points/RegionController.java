@@ -21,10 +21,11 @@ public class RegionController {
     private final RegionUseCase regionUseCase;
     private final MapperRegion mapper;
 
-    @PostMapping("/save")
-    public ResponseEntity<Region> saveRegion(@RequestBody RegionData regionData) {
+    @PostMapping("/save/{usuarioId}")
+    public ResponseEntity<Region> saveRegion(@RequestBody RegionData regionData,
+                                             @PathVariable Long usuarioId) {
         Region region = mapper.toRegion(regionData);
-        Region RegionValidadaGuardada = regionUseCase.crearRegion(region); //Ejecuta la lógica de negocio para guardar
+        Region RegionValidadaGuardada = regionUseCase.crearRegion(region, usuarioId); //Ejecuta la lógica de negocio para guardar
 
         if (RegionValidadaGuardada.getIdRegion() != null) {
             return ResponseEntity.ok(RegionValidadaGuardada); //Valida si se guardó bien por medio del ID.
@@ -34,10 +35,11 @@ public class RegionController {
         //Si el id es nulo, devuelve un 409
     }
 
-    @DeleteMapping("/{idRegion}")
-    public ResponseEntity<String> deleteRegion(@PathVariable Long idRegion) {
+    @DeleteMapping("/{idRegion}/{usuarioId}")
+    public ResponseEntity<String> deleteRegion(@PathVariable Long idRegion,
+                                               @PathVariable Long usuarioId) {
         try{
-            regionUseCase.eliminarRegion(idRegion);
+            regionUseCase.eliminarRegion(idRegion, usuarioId);
             //Si elimina bien, devuelve un 200 con un mensaje de region eliminada
             return new  ResponseEntity<>("Region eliminada", HttpStatus.OK);
         }catch (Exception e){
@@ -58,13 +60,14 @@ public class RegionController {
         return new  ResponseEntity<>(regionValidadaEncontrada, HttpStatus.NOT_FOUND);
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<Region> updateRegion(@RequestBody RegionData regionData) {
+    @PutMapping("/update/{usuarioId}")
+    public ResponseEntity<Region> updateRegion(@RequestBody RegionData regionData,
+                                               @PathVariable Long usuarioId) {
         try {
             //Convierte regionData a region
             Region region = mapper.toRegion(regionData);
             //Usa la lógica de negocio para actualizar
-            Region regionValidadaActualizada = regionUseCase.actualizarRegion(region);
+            Region regionValidadaActualizada = regionUseCase.actualizarRegion(region, usuarioId);
             //Si todoo esta bien, retorna 200 con region actualizada
             return new  ResponseEntity<>(regionValidadaActualizada, HttpStatus.OK);
         } catch (Exception e) {
