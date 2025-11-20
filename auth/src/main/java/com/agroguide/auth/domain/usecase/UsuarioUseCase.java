@@ -86,7 +86,8 @@ public class UsuarioUseCase {
                 usuario.getEmail()==null|| usuario.getEmail().isBlank()||
                 usuario.getPassword()==null || usuario.getPassword().isBlank()||
                 usuario.getUbicacion()==null|| usuario.getUbicacion().isBlank()||
-                usuario.getTipoUsuario()==null|| usuario.getTipoUsuario().isBlank()||
+                usuario.getTelefono()==null || usuario.getTelefono().isBlank()||
+                usuario.getTipoUsuario()==null || usuario.getTipoUsuario().isBlank()||
                 usuario.getEdad()==null){
             throw new IllegalArgumentException("Todos los datos deben ser completados");
         }
