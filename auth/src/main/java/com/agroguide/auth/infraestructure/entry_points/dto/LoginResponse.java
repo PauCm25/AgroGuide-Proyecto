@@ -9,6 +9,6 @@ public class LoginResponse {
     private String mensaje;
     private Long usuarioId;
     private String nombre;
-    private  String telefono;
-    private String tipoUsuario;
+    private  String tipoUsuario;
+    private String telefono;
 }
