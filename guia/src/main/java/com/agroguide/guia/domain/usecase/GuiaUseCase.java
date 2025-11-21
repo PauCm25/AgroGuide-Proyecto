@@ -180,7 +180,7 @@ public class GuiaUseCase {
             // 2. Obtener el rol del usuario
             String rol = usuarioInfo.getTipoUsuario().trim().toUpperCase();
 
-            // 3. Buscar la guía
+            // Buscar la guía
             Guia guia = guiaGateway.consultarPorId(idGuia);
             if (guia == null) {
                 return new Guia(); // retornar vacía si no existe

@@ -35,16 +35,25 @@ public class FavoritosUseCase {
             throw new GuiaNoExisteException("Guia no encontrada - AgregarAFavoritos");
         }
 
-        //Crear el obj favoritos
-        Favoritos favoritos = new Favoritos();
-        favoritos.setIdGuia(idGuia);
-        favoritos.setIdUsuario(usuarioId);
-        favoritos.setTituloGuia(guia.getTitulo());
-        favoritos.setAutorGuia(guia.getNombreAutor());
+        // Validar estado de la guía (solo se permiten guías APROBADAS)
+        if (guia.getEstadoGuia() == null ||
+                !guia.getEstadoGuia().equalsIgnoreCase("APROBADA")) {
 
-        //guardar el objeto
-        return favoritosGateway.agregarFavs(favoritos);
-    }
+            throw new GuiaNoDisponibleException(
+                    "La guía no puede agregarse a favoritos porque no está aprobada. Estado actual: "
+                            + guia.getEstadoGuia());
+        }
+            //Crear el obj favoritos
+            Favoritos favoritos = new Favoritos();
+            favoritos.setIdGuia(idGuia);
+            favoritos.setIdUsuario(usuarioId);
+            favoritos.setTituloGuia(guia.getTitulo());
+            favoritos.setAutorGuia(guia.getNombreAutor());
+
+            //guardar el objeto
+            return favoritosGateway.agregarFavs(favoritos);
+        }
+
 
     public List<Favoritos> consultarFavoritos(Long usuarioId, int page, int size) {
 
