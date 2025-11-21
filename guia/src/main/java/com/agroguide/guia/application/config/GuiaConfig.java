@@ -4,7 +4,7 @@ import com.agroguide.guia.domain.model.gateway.*;
 import com.agroguide.guia.domain.usecase.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
+//se utiliza para crear casos de uso
 @Configuration
 public class GuiaConfig {
 
@@ -12,6 +12,7 @@ public class GuiaConfig {
     public FavoritosUseCase favoritosUseCase(FavoritosGateway favoritosGateway,
                                              GuiaGateway guiaGateway,
                                              UsuarioGateway usuarioGateway) {
+        //Caso inyectado en el caso de uso de los gateway
         return new FavoritosUseCase(favoritosGateway, guiaGateway, usuarioGateway);
     }
 
