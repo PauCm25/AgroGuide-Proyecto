@@ -41,6 +41,7 @@ public class UsuarioUseCase {
     }
 
     private static void listaErrores(Usuario usuario) {
+        // la lista funciona ya que al momento que exista varios errores a la vez envie el mensaje del error
         List<String> errores =new ArrayList<>();
         if (usuario.getNombre()==null|| usuario.getNombre().isBlank()){
             errores.add("El nombre es requerido");
@@ -95,6 +96,7 @@ public class UsuarioUseCase {
 
     //ESTUDIAR PORQUE ESTATICA
     private static boolean esPasswordSegura(String password) {
+        //no depende de una instancia, es decir no utiliza atributos de la clase
         return password != null &&
                 password.length() >= 8 &&
                 password.matches(".*[A-Z].*") &&        // al menos una mayúscula
@@ -129,6 +131,7 @@ public class UsuarioUseCase {
         }catch (Exception e){
             throw new IllegalArgumentException("Usuario con ID "+usuario.getId()+" no encontrado");
         }
+        //ISEMPTY= funciona cuando la contraseña no existe o la contraseña es vacía
         if (usuario.getPassword()==null||usuario.getPassword().isEmpty()){
             throw new IllegalArgumentException("La contraseña es requerida");
         }
@@ -144,6 +147,7 @@ public class UsuarioUseCase {
             usuarioExiste = usuarioGateway.buscarPorID(id);
 
         } catch (Exception e) {
+            //Verifica si el mensaje esnulo,lo convierte a minuscula
             String mensaje = e.getMessage() != null ? e.getMessage().toLowerCase() : "";
             if (mensaje.contains("no encontrado") || mensaje.contains("not found")) {
                 throw new IllegalArgumentException("Usuario con ID " + id + " no existe en la base de datos");

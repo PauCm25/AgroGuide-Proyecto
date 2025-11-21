@@ -15,31 +15,33 @@ import org.springframework.web.server.ResponseStatusException;
 @RequiredArgsConstructor
 @Component
 public class UsuarioGatewayImpl implements UsuarioGateway {
-
+//Inyecta dependencias por el contructtir
+    //Rest template: se utiliza para consumir el microservicio auth
     private final RestTemplate restTemplate;
     private final MapperUsuarioInfo mapper;
 
     @Override
     public UsuarioInfo usuarioExiste(Long usuarioId) {
         try {
+            //llama al  get del microservicio auth para la info de usuario
             UsuarioInfoDTO dto = restTemplate
                     .getForEntity(
                             "https://agroguide-auth-1zd2.onrender.com/api/agroguide/usuario/" + usuarioId,
                             UsuarioInfoDTO.class
                     )
-                    .getBody();
-
+                    .getBody();//extrae el cuerpo de respuesta
+            //valida el microservicio
             if (dto == null) {
                 throw new RuntimeException("Respuesta vacía desde Auth");
             }
-
+            //convierte el dto en un objeto dominio
             return mapper.toUsuarioInfo(dto);
 
         } catch (HttpClientErrorException.NotFound e) {
-            // Auth respondió 404 → usuario NO existe
+            // Auth respondió 404,  significa que usuario NO existe
             throw new IllegalArgumentException("Usuario no existe");
         } catch (Exception e) {
-            // Cualquier otro error → Auth caído / timeout / 500 / etc
+            // Cualquier otro error, Auth caído / timeout / 500 / etc
             throw new RuntimeException("Error al consultar el microservicio de Auth");
         }
     }

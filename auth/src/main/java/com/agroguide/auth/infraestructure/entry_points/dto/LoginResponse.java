@@ -5,6 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
+//DTO
 public class LoginResponse {
     private String mensaje;
     private Long usuarioId;

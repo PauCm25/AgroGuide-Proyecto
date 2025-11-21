@@ -14,6 +14,8 @@ import lombok.NoArgsConstructor;
 public class CategoriaData {
 
     @Id
+    //Marca el campo como clase primaria en la tabla
+    //AUTO: genera el id incrementa, secuecnia
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long idCategoria;
 

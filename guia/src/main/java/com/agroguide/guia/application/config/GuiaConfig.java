@@ -19,6 +19,7 @@ public class GuiaConfig {
     @Bean
     public CategoriaUseCase categoriaUseCase(CategoriaGateway categoriaGateway,
                                              UsuarioGateway usuarioGateway) {
+        //Caso inyectado en el caso de uso de los gateway
         return new CategoriaUseCase(categoriaGateway, usuarioGateway);
     }
 

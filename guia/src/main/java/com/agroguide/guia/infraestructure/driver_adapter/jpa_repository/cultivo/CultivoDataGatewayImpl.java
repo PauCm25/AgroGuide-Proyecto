@@ -17,14 +17,17 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Component
+//El dominio solo conoce CultivoGateway, nunca JPA.
 public class CultivoDataGatewayImpl implements CultivoGateway {
-
+    //el repositorio se comunica con la bd
     private final CultivoDataJpaRepository repository;
+    //convierte entidades del dominio y de la  BD
     private final MapperCultivo mapper;
 
     @Override
     public boolean existeCultivo(Long id) {
         try {
+            //consulta a la bd usando existsById
             return repository.existsById(id);
 
         } catch (Exception e) {
@@ -35,20 +38,25 @@ public class CultivoDataGatewayImpl implements CultivoGateway {
     @Override
     public Cultivo crear(Cultivo cultivo) {
         CultivoData cultivoData = mapper.toCultData(cultivo);
+        //guarda en la Bd
         return mapper.toCultivo(repository.save(cultivoData));
     }
 
     @Override
     public void eliminarPorId(Long idCultivo) {
+        //valida si existe
         if (!repository.existsById(idCultivo)){
             throw new CultivoNoExisteException("El cultivo no existe");
         }
+        //si existe, lo elimina
         repository.deleteById(idCultivo);
     }
 
     @Override
     public Cultivo consultarPorId(Long idCultivo) {
+        //busca en la bd por su id
         return repository.findById(idCultivo)
+                //convierte cultivoData a Cultivo
                 .map(mapper::toCultivo).
                 orElseThrow(() -> new CultivoNoExisteException("El cultivo no existe"));
     }

@@ -19,45 +19,54 @@ import java.util.stream.Collectors;
 public class CategoriaDataGatewayImpl implements CategoriaGateway {
 
     private final CategoriaDataJpaRepository repository;
-    private final MapperCategoria mapper;
+    private final MapperCategoria mapper;// convierte entre entidad y modelo dominio
 
     @Override
     public boolean existeCategoria(Long id) {
         try {
+            //verifica si existe una categoría por su ID
             return repository.existsById(id);
 
         } catch (Exception e) {
+            //si ocurre un error, retorna false
             return false;
         }
     }
 
     @Override
     public Categoria crear(Categoria categoria) {
+        //convierte el objeto dominio a entidad jpa
         CategoriaData categoriaData = mapper.toCatData(categoria);
+        //guarda la entidad y convierte la respuesta a objeto del dominio
         return mapper.toCateg(repository.save(categoriaData));
     }
 
     @Override
     public void eliminarPorId(Long idCategoria) {
+        //si el id no existe en la bd, lanza una excepción
         if (!repository.existsById(idCategoria)){
             throw new CategoriaNoExisteException("La categoria no existe");
         }
+        //elimina la categoria
         repository.deleteById(idCategoria);
     }
 
     @Override
     public Categoria consultarPorId(Long idCategoria) {
+        //busca por id, si existe lo mapea y si no, lanza una excepción
         return repository.findById(idCategoria)
-                .map(mapper::toCateg).
+                .map(mapper::toCateg).//convierte categoriaData a Categoría
                 orElseThrow(() -> new CategoriaNoExisteException("La categoria no existe"));
     }
 
     @Override
     public Categoria actualizarPorId(Categoria categoria) {
         CategoriaData categoriaData = mapper.toCatData(categoria);
+        //verifica si existe la categoria antes de actualizar
         if (!repository.existsById(categoriaData.getIdCategoria())){
             throw new CategoriaNoExisteException("La categoria no existe");
         }
+        //guardamos y convertimos el resultado
         return mapper.toCateg(repository.save(categoriaData));
     }
 
